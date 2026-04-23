@@ -1,21 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const allCities = [
-  "Aachen","Augsburg","Bergisch Gladbach","Berlin","Bielefeld",
-  "Bochum","Bonn","Bottrop","Braunschweig","Bremen","Bremerhaven",
-  "Chemnitz","Cottbus","Darmstadt","Dortmund","Dresden","Duisburg",
-  "Düsseldorf","Erfurt","Erlangen","Essen","Frankfurt","Freiburg",
-  "Fürth","Gelsenkirchen","Göttingen","Hagen","Halle","Hamburg",
-  "Hamm","Hannover","Heidelberg","Heilbronn","Herne","Ingolstadt",
-  "Jena","Karlsruhe","Kassel","Kiel","Koblenz","Köln","Krefeld",
-  "Leipzig","Leverkusen","Lübeck","Ludwigshafen","Magdeburg","Mainz",
-  "Mannheim","Moers","Mönchengladbach","Mülheim","München","Münster",
-  "Neuss","Nürnberg","Oberhausen","Offenbach","Oldenburg","Osnabrück",
-  "Paderborn","Pforzheim","Potsdam","Recklinghausen","Regensburg",
-  "Remscheid","Rostock","Saarbrücken","Salzgitter","Siegen","Solingen",
-  "Stuttgart","Ulm","Wiesbaden","Wolfsburg","Wuppertal","Würzburg"
-];
+function normalizeCityName(value: string) {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
 
 const braiders = [
   {
@@ -46,11 +34,48 @@ export default function Home() {
   const [clientSubmitted, setClientSubmitted] = useState(false);
   const [notifySubmitted, setNotifySubmitted] = useState(false);
   const [notifyEmail, setNotifyEmail] = useState("");
+  const [allCities, setAllCities] = useState<string[]>([]);
+  const [citiesLoaded, setCitiesLoaded] = useState(false);
   const [citySearch, setCitySearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const filtered = citySearch.length > 0
-    ? allCities.filter((c) => c.toLowerCase().startsWith(citySearch.toLowerCase()))
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadCities() {
+      try {
+        const response = await fetch("/api/cities");
+
+        if (!response.ok) {
+          throw new Error("Failed to load city list");
+        }
+
+        const cities: string[] = await response.json();
+
+        if (isActive) {
+          setAllCities(cities);
+        }
+      } catch {
+        if (isActive) {
+          setAllCities([]);
+        }
+      } finally {
+        if (isActive) {
+          setCitiesLoaded(true);
+        }
+      }
+    }
+
+    loadCities();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  const normalizedSearch = normalizeCityName(citySearch.trim());
+  const filtered = normalizedSearch.length > 0
+    ? allCities.filter((city) => normalizeCityName(city).startsWith(normalizedSearch))
     : [];
 
   return (
@@ -146,6 +171,11 @@ export default function Home() {
             onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
             style={{ width: "100%", border: "1.5px solid #D6CEC4", padding: "12px 16px", fontSize: "14px", backgroundColor: "#EDE7DF", fontFamily: "'Lato', sans-serif", color: "#2C1A0E", outline: "none" }}
           />
+          {showDropdown && normalizedSearch.length > 0 && !citiesLoaded && (
+            <div style={{ position: "absolute", top: "100%", left: 0, right: 0, backgroundColor: "#F7F3EE", border: "1.5px solid #D6CEC4", borderTop: "none", zIndex: 50, padding: "10px 16px", fontFamily: "'Lato', sans-serif", fontSize: "14px", color: "#7A5C48" }}>
+              Loading cities...
+            </div>
+          )}
           {showDropdown && filtered.length > 0 && (
             <div style={{ position: "absolute", top: "100%", left: 0, right: 0, backgroundColor: "#F7F3EE", border: "1.5px solid #D6CEC4", borderTop: "none", maxHeight: "220px", overflowY: "auto", zIndex: 50 }}>
               {filtered.map((city) => (
