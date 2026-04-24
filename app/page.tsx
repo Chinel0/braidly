@@ -12,9 +12,9 @@ const braiders = [
 ];
 
 const heroImages = [
-  { url: "https://images.unsplash.com/photo-1622557850710-8d1d2e9cfa36?w=400&q=80", alt: "Black woman with knotless braids", label: "Knotless Braids" },
-  { url: "https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?w=400&q=80", alt: "Black woman with locs", label: "Goddess Locs" },
-  { url: "https://images.unsplash.com/photo-1612363148717-b7e9e2a34fd2?w=400&q=80", alt: "Black woman with box braids", label: "Box Braids" },
+  { url: "/knotless_braid.jpg", alt: "Black woman with knotless braids", label: "Knotless Braids" },
+  { url: "/locs.jpg", alt: "Black woman with locs", label: "Goddess Locs" },
+  { url: "/wig.jpg", alt: "Black woman with wig style", label: "Wig Style" },
 ];
 
 export default function Home() {
