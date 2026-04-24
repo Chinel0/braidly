@@ -1,25 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function normalizeCityName(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
-
-const allCities = [
-  "Aachen","Augsburg","Bergisch Gladbach","Berlin","Bielefeld",
-  "Bochum","Bonn","Bottrop","Braunschweig","Bremen","Bremerhaven",
-  "Chemnitz","Cottbus","Darmstadt","Dortmund","Dresden","Duisburg",
-  "Düsseldorf","Erfurt","Erlangen","Essen","Frankfurt","Freiburg",
-  "Fürth","Gelsenkirchen","Göttingen","Hagen","Halle","Hamburg",
-  "Hamm","Hannover","Heidelberg","Heilbronn","Herne","Ingolstadt",
-  "Jena","Karlsruhe","Kassel","Kiel","Koblenz","Köln","Krefeld",
-  "Leipzig","Leverkusen","Lübeck","Ludwigshafen","Magdeburg","Mainz",
-  "Mannheim","Moers","Mönchengladbach","Mülheim","München","Münster",
-  "Neuss","Nürnberg","Oberhausen","Offenbach","Oldenburg","Osnabrück",
-  "Paderborn","Pforzheim","Potsdam","Recklinghausen","Regensburg",
-  "Remscheid","Rostock","Saarbrücken","Salzgitter","Siegen","Solingen",
-  "Stuttgart","Ulm","Wiesbaden","Wolfsburg","Wuppertal","Würzburg"
-];
 
 const braiders = [
   { name: "Aminata D.", city: "Munich", styles: "Knotless Braids, Box Braids, Locs", price: "From €60", available: "Sat & Sun available" },
@@ -38,8 +22,42 @@ export default function Home() {
   const [clientSubmitted, setClientSubmitted] = useState(false);
   const [notifySubmitted, setNotifySubmitted] = useState(false);
   const [notifyEmail, setNotifyEmail] = useState("");
+  const [allCities, setAllCities] = useState<string[]>([]);
+  const [citiesLoaded, setCitiesLoaded] = useState(false);
   const [citySearch, setCitySearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadCities() {
+      try {
+        const response = await fetch("/api/cities");
+        if (!response.ok) {
+          throw new Error("Failed to load city list");
+        }
+
+        const cities: string[] = await response.json();
+        if (isActive) {
+          setAllCities(cities);
+        }
+      } catch {
+        if (isActive) {
+          setAllCities([]);
+        }
+      } finally {
+        if (isActive) {
+          setCitiesLoaded(true);
+        }
+      }
+    }
+
+    loadCities();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   const normalizedSearch = normalizeCityName(citySearch.trim());
   const filtered = normalizedSearch.length > 0
@@ -198,7 +216,7 @@ export default function Home() {
       {/* HERO */}
       <section style={{ padding: "80px 48px 60px", maxWidth: "1100px", margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <p className="section-label">For Black women across Europe</p>
+          <p className="section-label">For Black women across Germany</p>
           <h1 className="font-display hero-title" style={{ fontSize: "54px", fontWeight: 700, lineHeight: 1.15, color: "#2C1A0E", marginBottom: "16px" }}>
             Find a trusted braider near you
             <br />
