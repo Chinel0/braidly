@@ -335,7 +335,65 @@ export default function Home() {
           ))}
         </div>
       </section>
+{/* Client Form */}
+<div>
+  <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "32px" }}>
+    <div style={{ width: "3px", height: "40px", backgroundColor: "#7A3B1E" }} />
+    <h3 className="font-display" style={{ fontSize: "24px", fontWeight: 600 }}>I am looking for a braider</h3>
+  </div>
+  {clientSubmitted ? (
+    <div>
+      <p className="font-body" style={{ color: "#6B8F5E", fontSize: "15px", fontStyle: "italic", marginBottom: "16px" }}>
+        Your booking request has been sent. The braider will confirm shortly.
+      </p>
+      <p className="font-body" style={{ fontSize: "13px", color: "#7A5C48", lineHeight: 1.7 }}>
+        You will receive a confirmation email once they accept. A reminder will be sent to you the day before your appointment.
+      </p>
+    </div>
+  ) : (
+    <form
+      onSubmit={(e) => { e.preventDefault(); setClientSubmitted(true); }}
+      style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+    >
+      {[
+        { label: "Full Name", type: "text", placeholder: "Your name" },
+        { label: "Email Address", type: "email", placeholder: "your@email.com" },
+        { label: "Your City", type: "text", placeholder: "e.g. München, Berlin, Hamburg" },
+        { label: "Hair Style You Want", type: "text", placeholder: "e.g. Knotless braids, Locs, Twists" },
+        { label: "Preferred Date", type: "date", placeholder: "" },
+      ].map((field) => (
+        <div key={field.label}>
+          <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+            {field.label}
+          </label>
+          <input className="input-field" type={field.type} placeholder={field.placeholder} required />
+        </div>
+      ))}
 
+      {/* Message box */}
+      <div>
+        <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+          Any questions or notes for your braider? <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>(optional)</span>
+        </label>
+        <p className="font-body" style={{ fontSize: "12px", color: "#A89080", marginBottom: "8px" }}>
+          e.g. hair length, allergies, specific style reference
+        </p>
+        <textarea
+          className="input-field"
+          placeholder="Write any questions or details here..."
+          rows={3}
+          style={{ resize: "vertical", paddingTop: "8px" }}
+        />
+      </div>
+
+      <button className="btn-primary" type="submit">Send Booking Request</button>
+
+      <p className="font-body" style={{ fontSize: "11px", color: "#A89080", lineHeight: 1.6 }}>
+        After your booking is confirmed you will receive a reminder email the day before your appointment with the braider contact details.
+      </p>
+    </form>
+  )}
+</div>
       {/* REVIEWS */}
 <section style={{ backgroundColor: "#F7F3EE", padding: "80px 48px", borderBottom: "1px solid #D6CEC4" }}>
   <div style={{ maxWidth: "900px", margin: "0 auto" }}>
