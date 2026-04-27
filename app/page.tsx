@@ -336,6 +336,38 @@ export default function Home() {
         </div>
       </section>
 
+      {/* REVIEWS */}
+<section style={{ backgroundColor: "#F7F3EE", padding: "80px 48px", borderBottom: "1px solid #D6CEC4" }}>
+  <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+    <p className="section-label">Trusted by the community</p>
+    <h2 className="font-display" style={{ fontSize: "38px", fontWeight: 600, marginBottom: "48px" }}>
+      What clients are saying
+    </h2>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "28px" }} className="grid-3">
+      {[
+        { name: "Adaeze O.", city: "Munich", review: "I found my braider in 10 minutes. She came to my home, did the most beautiful knotless braids and her price was so fair. Never going back to the salon.", style: "Knotless Braids", stars: 5 },
+        { name: "Blessing N.", city: "Berlin", review: "I was so nervous going to a stranger's home but her profile had everything — price, location, video. I knew exactly what I was getting before I arrived.", style: "Box Braids", stars: 5 },
+        { name: "Yetunde A.", city: "Frankfurt", review: "As a braider, I got three new clients in my first week on Braidely. Women in my city finally know I exist.", style: "Braider — Senegalese Twists", stars: 5 },
+      ].map((review) => (
+        <div key={review.name} style={{ backgroundColor: "#EDE7DF", padding: "28px", border: "1px solid #D6CEC4" }}>
+          <div style={{ display: "flex", gap: "4px", marginBottom: "16px" }}>
+            {Array.from({ length: review.stars }).map((_, i) => (
+              <span key={i} style={{ color: "#7A3B1E", fontSize: "14px" }}>★</span>
+            ))}
+          </div>
+          <p className="font-body" style={{ fontSize: "14px", lineHeight: 1.8, color: "#5C3A22", marginBottom: "20px", fontStyle: "italic" }}>
+            "{review.review}"
+          </p>
+          <div style={{ borderTop: "1px solid #D6CEC4", paddingTop: "16px" }}>
+            <p className="font-body" style={{ fontSize: "13px", fontWeight: 700, color: "#2C1A0E" }}>{review.name}</p>
+            <p className="font-body" style={{ fontSize: "11px", color: "#9E8070", letterSpacing: "1px", textTransform: "uppercase", marginTop: "2px" }}>{review.city} · {review.style}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
       {/* HOW IT WORKS */}
       <section style={{ backgroundColor: "#EDE7DF", padding: "80px 48px", borderTop: "1px solid #D6CEC4", borderBottom: "1px solid #D6CEC4" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
@@ -359,63 +391,138 @@ export default function Home() {
       </section>
 
       {/* JOIN FORM */}
-      <section id="join" style={{ padding: "80px 48px", maxWidth: "900px", margin: "0 auto" }}>
-        <p className="section-label">Get started today</p>
-        <h2 className="font-display" style={{ fontSize: "38px", fontWeight: 600, marginBottom: "8px" }}>Join Braidely — it is completely free</h2>
-        <p className="font-body" style={{ fontSize: "15px", color: "#7A5C48", marginBottom: "56px" }}>
-          Whether you are a Black woman looking for a braider or a braider ready to grow your clientele, this is where you belong.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px" }} className="grid-2">
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "32px" }}>
-              <div style={{ width: "3px", height: "40px", backgroundColor: "#7A3B1E" }} />
-              <h3 className="font-display" style={{ fontSize: "24px", fontWeight: 600 }}>I am looking for a braider</h3>
-            </div>
-            {clientSubmitted ? (
-              <p className="font-body" style={{ color: "#6B8F5E", fontSize: "15px", fontStyle: "italic" }}>Thank you. We will match you with braiders in your city shortly.</p>
-            ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setClientSubmitted(true); }} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                {[
-                  { label: "Full Name", type: "text", placeholder: "Your name" },
-                  { label: "Email Address", type: "email", placeholder: "your@email.com" },
-                  { label: "Your City", type: "text", placeholder: "e.g. München, Berlin, Hamburg" },
-                  { label: "Hair Style You Want", type: "text", placeholder: "e.g. Knotless braids, Locs, Twists" },
-                ].map((field) => (
-                  <div key={field.label}>
-                    <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>{field.label}</label>
-                    <input className="input-field" type={field.type} placeholder={field.placeholder} required />
-                  </div>
-                ))}
-                <button className="btn-primary" type="submit">Find My Braider</button>
-              </form>
-            )}
-          </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "32px" }}>
-              <div style={{ width: "3px", height: "40px", backgroundColor: "#2C1A0E" }} />
-              <h3 className="font-display" style={{ fontSize: "24px", fontWeight: 600 }}>I am a braider</h3>
-            </div>
-            {braiderSubmitted ? (
-              <p className="font-body" style={{ color: "#6B8F5E", fontSize: "15px", fontStyle: "italic" }}>Welcome to Braidely. We will be in touch to set up your profile.</p>
-            ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setBraiderSubmitted(true); }} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                {[
-                  { label: "Full Name", type: "text", placeholder: "Your name" },
-                  { label: "WhatsApp Number", type: "tel", placeholder: "+49 176 XXXXXXXX" },
-                  { label: "Your City", type: "text", placeholder: "e.g. München, Berlin, Hamburg" },
-                  { label: "Styles You Offer", type: "text", placeholder: "e.g. Knotless, Box braids, Locs" },
-                ].map((field) => (
-                  <div key={field.label}>
-                    <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>{field.label}</label>
-                    <input className="input-field" type={field.type} placeholder={field.placeholder} required />
-                  </div>
-                ))}
-                <button className="btn-primary" type="submit">List My Profile Free</button>
-              </form>
-            )}
-          </div>
+      {/* Braider Form */}
+<div>
+  <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "32px" }}>
+    <div style={{ width: "3px", height: "40px", backgroundColor: "#2C1A0E" }} />
+    <h3 className="font-display" style={{ fontSize: "24px", fontWeight: 600 }}>I am a braider</h3>
+  </div>
+
+  <p className="font-body" style={{ fontSize: "13px", color: "#7A5C48", marginBottom: "28px", lineHeight: 1.7, padding: "12px 16px", backgroundColor: "#EDE7DF", borderLeft: "3px solid #6B8F5E" }}>
+    You do not need to be a registered business to join Braidely. If you can braid, you belong here.
+  </p>
+
+  {braiderSubmitted ? (
+    <p className="font-body" style={{ color: "#6B8F5E", fontSize: "15px", fontStyle: "italic" }}>
+      Welcome to Braidely. We will be in touch to set up your full profile.
+    </p>
+  ) : (
+    <form
+      onSubmit={(e) => { e.preventDefault(); setBraiderSubmitted(true); }}
+      style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+    >
+      {/* Basic Info */}
+      {[
+        { label: "Full Name", type: "text", placeholder: "Your name" },
+        { label: "Email Address", type: "email", placeholder: "your@email.com" },
+        { label: "WhatsApp Number", type: "tel", placeholder: "+49 176 XXXXXXXX" },
+        { label: "Your City", type: "text", placeholder: "e.g. München, Berlin, Hamburg" },
+        { label: "Nearest Bus or U-Bahn Stop", type: "text", placeholder: "e.g. Marienplatz, Ostbahnhof" },
+      ].map((field) => (
+        <div key={field.label}>
+          <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+            {field.label}
+          </label>
+          <input className="input-field" type={field.type} placeholder={field.placeholder} required />
         </div>
-      </section>
+      ))}
+
+      {/* Price List */}
+      <div>
+        <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+          Price List — Style and Price
+        </label>
+        <p className="font-body" style={{ fontSize: "12px", color: "#A89080", marginBottom: "10px" }}>
+          List each style and its price. e.g. Knotless Braids — €80, Box Braids — €60
+        </p>
+        <textarea
+          className="input-field"
+          placeholder={"Knotless Braids — €80\nBox Braids — €60\nSenegalese Twists — €70"}
+          rows={4}
+          required
+          style={{ resize: "vertical", paddingTop: "8px" }}
+        />
+      </div>
+
+      {/* Social Links */}
+      {[
+        { label: "TikTok Link", placeholder: "https://tiktok.com/@yourhandle" },
+        { label: "Instagram Link", placeholder: "https://instagram.com/yourhandle" },
+      ].map((field) => (
+        <div key={field.label}>
+          <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+            {field.label} <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>(optional)</span>
+          </label>
+          <input className="input-field" type="url" placeholder={field.placeholder} />
+        </div>
+      ))}
+
+      {/* Home Service Toggle */}
+      <div>
+        <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "12px" }}>
+          Do you offer home service?
+        </label>
+        <div style={{ display: "flex", gap: "12px" }}>
+          {["Yes, I come to the client", "No, client comes to me", "Both"].map((option) => (
+            <label key={option} className="font-body" style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#5C3A22", cursor: "pointer" }}>
+              <input type="radio" name="homeService" value={option} required style={{ accentColor: "#7A3B1E" }} />
+              {option}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Salon */}
+      <div>
+        <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "12px" }}>
+          Do you own or work in a salon?
+        </label>
+        <div style={{ display: "flex", gap: "16px", marginBottom: "12px" }}>
+          {["Yes", "No"].map((option) => (
+            <label key={option} className="font-body" style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#5C3A22", cursor: "pointer" }}>
+              <input type="radio" name="hasSalon" value={option} required style={{ accentColor: "#7A3B1E" }} />
+              {option}
+            </label>
+          ))}
+        </div>
+        <input
+          className="input-field"
+          type="text"
+          placeholder="Salon name and address (if applicable)"
+        />
+      </div>
+
+      {/* Availability */}
+      <div>
+        <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+          General Availability
+        </label>
+        <input className="input-field" type="text" placeholder="e.g. Weekends only, Mon–Fri after 5pm, Flexible" required />
+      </div>
+
+      {/* Photo upload placeholder */}
+      <div>
+        <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+          Profile Photo
+        </label>
+        <input type="file" accept="image/*" style={{ fontFamily: "'Lato', sans-serif", fontSize: "13px", color: "#5C3A22" }} />
+      </div>
+
+      {/* Video upload placeholder */}
+      <div>
+        <label className="font-body" style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#9E8070", display: "block", marginBottom: "8px" }}>
+          Portfolio Video
+        </label>
+        <p className="font-body" style={{ fontSize: "12px", color: "#A89080", marginBottom: "8px" }}>
+          Upload a short video of your braiding work. This is what clients will see first.
+        </p>
+        <input type="file" accept="video/*" style={{ fontFamily: "'Lato', sans-serif", fontSize: "13px", color: "#5C3A22" }} />
+      </div>
+
+      <button className="btn-primary" type="submit">List My Profile Free</button>
+    </form>
+  )}
+</div>
 
       {/* COMING SOON */}
       <section style={{ backgroundColor: "#2C1A0E", color: "#F7F3EE", padding: "100px 48px", textAlign: "center" }}>
