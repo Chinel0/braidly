@@ -235,7 +235,7 @@ export default function Home() {
       {/* ── HERO ── */}
       <section style={{ padding:"80px 48px 60px", maxWidth:"1100px", margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:"48px" }}>
-          <p className="section-label">For Black women across Europe</p>
+          <p className="section-label">For Black women across Germany</p>
           <h1 className="font-display hero-title" style={{ fontSize:"54px", fontWeight:700, lineHeight:1.15, color:"#2C1A0E", marginBottom:"16px" }}>
             Find a trusted braider near you<br />
             <em style={{ fontWeight:400, color:"#7A3B1E" }}>in minutes, not weeks</em>
