@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { db } from "../firebase/firebase";
 import { collection, addDoc, getDocs, query, orderBy, Timestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "../lib/cloudinary";
+import { sendBraiderNotification, sendClientConfirmation } from "../lib/sendEmails";
 
 function normalizeCityName(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -168,8 +169,21 @@ export default function Home() {
         date: cDate, note: cNote,
         status: "pending", createdAt: Timestamp.now(),
       });
+
+      // Send email to client immediately
+      await sendClientConfirmation({
+        client_name: cName,
+        client_email: cEmail,
+        braider_name: "your braider",
+        braider_city: cCity,
+        style: cStyle,
+        date: cDate,
+      });
+
       setClientSubmitted(true);
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // ── notify ──
