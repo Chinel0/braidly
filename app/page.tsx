@@ -24,14 +24,19 @@ interface AvailDay { enabled: boolean; from: string; to: string; }
 interface Braider {
   id?: string;
   name: string;
+  email: string;
+  whatsapp?: string;
   city: string;
+  transportStop?: string;
+  bio?: string;
+  homeService?: string;
+  hasSalon?: string;
+  salonAddress?: string;
   styles: string;
   price: string;
   available: string;
   photoUrl: string;
   videoUrl: string;
-  homeService: string;
-  transportStop: string;
 }
 
 function ContactForm() {
@@ -239,6 +244,7 @@ export default function Home() {
 
   // ── client booking ──
   const [clientSubmitted, setClientSubmitted] = useState(false);
+  const [selectedBraider, setSelectedBraider] = useState<Braider | null>(null);
   const [cName, setCName] = useState("");
   const [cEmail, setCEmail] = useState("");
   const [cCity, setCCity] = useState("");
@@ -253,6 +259,9 @@ export default function Home() {
         clientName: cName, clientEmail: cEmail,
         clientCity: cCity, style: cStyle,
         date: cDate, note: cNote,
+        braiderName: selectedBraider?.name || "",
+        braiderEmail: selectedBraider?.email || "",
+        braiderCity: selectedBraider?.city || "",
         status: "pending", createdAt: Timestamp.now(),
       });
 
@@ -478,7 +487,16 @@ export default function Home() {
                     <p className="font-body" style={{ fontSize:"12px", color:"#6B8F5E", marginBottom:"6px", fontWeight:700 }}>{braider.homeService}</p>
                   )}
                   <p className="font-body" style={{ fontSize:"12px", color:"#9E8070", marginBottom:"20px", fontStyle:"italic" }}>{braider.available}</p>
-                  <a href="#join"><button className="btn-primary" style={{ width:"100%" }}>Book Appointment</button></a>
+                  <button
+                    className="btn-primary"
+                    style={{ width:"100%" }}
+                    onClick={() => {
+                      setSelectedBraider(braider);
+                      document.getElementById("join")?.scrollIntoView({ behavior:"smooth" });
+                    }}
+                  >
+                    Book Appointment
+                  </button>
                 </div>
               </div>
             ))}
@@ -559,9 +577,66 @@ export default function Home() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleClientSubmit} style={{ display:"flex", flexDirection:"column", gap:"24px" }}>
-                {[
-                  { label:"Full Name", type:"text", val:cName, set:setCName, placeholder:"Your name" },
+              <>
+                {/* Braider selector */}
+                <div style={{ marginBottom:"32px", padding:"16px 20px", backgroundColor:"#EDE7DF", border:"1px solid #D6CEC4" }}>
+                  {selectedBraider ? (
+                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                      <div>
+                        <p className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", marginBottom:"6px" }}>Booking with</p>
+                        <p className="font-display" style={{ fontSize:"18px", fontWeight:600, color:"#2C1A0E" }}>{selectedBraider.name}</p>
+                        <p className="font-body" style={{ fontSize:"12px", color:"#7A5C48", marginTop:"2px" }}>{selectedBraider.city} · {selectedBraider.price}</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-ghost"
+                        onClick={() => setSelectedBraider(null)}
+                        style={{ fontSize:"12px" }}
+                      >
+                        Change
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"12px" }}>
+                        Select a braider
+                      </label>
+                      {braiders.length === 0 ? (
+                        <p className="font-body" style={{ fontSize:"13px", color:"#A89080" }}>No braiders listed yet. Check back soon.</p>
+                      ) : (
+                        <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
+                          {braiders.map((b: Braider) => (
+                            <button
+                              key={b.id || "new"}
+                              type="button"
+                              onClick={() => setSelectedBraider(b)}
+                              style={{
+                                display:"flex",
+                                justifyContent:"space-between",
+                                alignItems:"center",
+                                padding:"12px 16px",
+                                backgroundColor: ((selectedBraider as Braider | null)?.id === b.id) ? "#2C1A0E" : "#F7F3EE",
+                                color: ((selectedBraider as Braider | null)?.id === b.id) ? "#F7F3EE" : "#2C1A0E",
+                                border:"1px solid #D6CEC4",
+                                cursor:"pointer",
+                                fontFamily:"'Lato',sans-serif",
+                                fontSize:"13px",
+                                textAlign:"left",
+                              }}
+                            >
+                              <span style={{ fontWeight:700 }}>{b.name}</span>
+                              <span style={{ opacity:0.7 }}>{b.city} · {b.price}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <form onSubmit={handleClientSubmit} style={{ display:"flex", flexDirection:"column", gap:"24px" }}>
+                  {[
+                    { label:"Full Name", type:"text", val:cName, set:setCName, placeholder:"Your name" },
                   { label:"Email Address", type:"email", val:cEmail, set:setCEmail, placeholder:"your@email.com" },
                   { label:"Your City", type:"text", val:cCity, set:setCCity, placeholder:"e.g. München, Berlin, Hamburg" },
                 ].map((f) => (
@@ -593,7 +668,8 @@ export default function Home() {
                 <p className="font-body" style={{ fontSize:"11px", color:"#A89080", lineHeight:1.6 }}>
                   Braider contact details are shared only after your booking is confirmed. A reminder email is sent the day before your appointment.
                 </p>
-              </form>
+                </form>
+              </>
             )}
           </div>
 
