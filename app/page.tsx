@@ -34,6 +34,91 @@ interface Braider {
   transportStop: string;
 }
 
+function ContactForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await addDoc(collection(db, "contact_messages"), {
+        name, email, message,
+        createdAt: Timestamp.now(),
+      });
+      setSent(true);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (sent) {
+    return (
+      <div style={{ backgroundColor:"#F7F3EE", padding:"28px", border:"1px solid #D6CEC4" }}>
+        <p className="font-body" style={{ fontSize:"15px", fontWeight:700, color:"#2C1A0E", marginBottom:"8px" }}>
+          Message received.
+        </p>
+        <p className="font-body" style={{ fontSize:"13px", color:"#7A5C48", lineHeight:1.8 }}>
+          Thank you for reaching out. We will get back to you at {email} within 48 hours.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display:"flex", flexDirection:"column", gap:"24px" }}>
+      {[
+        { label:"Your Name", type:"text", val:name, set:setName, placeholder:"Your name" },
+        { label:"Email Address", type:"email", val:email, set:setEmail, placeholder:"your@email.com" },
+      ].map((f) => (
+        <div key={f.label}>
+          <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"8px" }}>
+            {f.label}
+          </label>
+          <input
+            className="input-field"
+            type={f.type}
+            value={f.val}
+            onChange={(e) => f.set(e.target.value)}
+            placeholder={f.placeholder}
+            required
+          />
+        </div>
+      ))}
+
+      <div>
+        <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"8px" }}>
+          Message
+        </label>
+        <textarea
+          className="input-field"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Write your message here..."
+          rows={5}
+          required
+          style={{ resize:"vertical", paddingTop:"8px" }}
+        />
+      </div>
+
+      <button className="btn-primary" type="submit" disabled={loading}>
+        {loading ? "Sending..." : "Send Message"}
+      </button>
+
+      <p className="font-body" style={{ fontSize:"11px", color:"#A89080", lineHeight:1.6 }}>
+        We respond to all messages within 48 hours. You can also reach us directly at{" "}
+        <a href="mailto:Nwekecl16046@gmail.com" style={{ color:"#7A3B1E" }}>
+          Nwekecl16046@gmail.com
+        </a>
+      </p>
+    </form>
+  );
+}
 export default function Home() {
   // ── city search ──
   const [citySearch, setCitySearch] = useState("");
@@ -683,6 +768,21 @@ export default function Home() {
               </>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section style={{ backgroundColor:"#EDE7DF", padding:"80px 48px", borderTop:"1px solid #D6CEC4" }}>
+        <div style={{ maxWidth:"560px", margin:"0 auto" }}>
+          <p className="section-label">Get in touch</p>
+          <h2 className="font-display" style={{ fontSize:"36px", fontWeight:600, marginBottom:"12px" }}>
+            Have a question?
+          </h2>
+          <p className="font-body" style={{ fontSize:"15px", color:"#7A5C48", marginBottom:"48px", lineHeight:1.8 }}>
+            Whether you are a braider with questions about joining, a client who needs help, or someone who wants to partner with us — we would love to hear from you.
+          </p>
+
+          <ContactForm />
         </div>
       </section>
 
