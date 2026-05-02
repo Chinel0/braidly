@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { db } from "../firebase/firebase";
 import { collection, addDoc, getDocs, query, orderBy, Timestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "../lib/cloudinary";
@@ -714,7 +715,7 @@ export default function Home() {
       <footer style={{ backgroundColor:"#1A0E07", color:"#6B4F3A", padding:"32px 48px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"12px" }}>
         <span className="font-display" style={{ fontSize:"18px", color:"#9E7A60" }}>Braidely</span>
         <span className="font-body" style={{ fontSize:"12px", letterSpacing:"1px" }}>© 2026 Braidely. Built for Black women across Europe.</span>
-        <a href="/privacy" className="font-body" style={{ fontSize:"12px", color:"#6B4F3A", textDecoration:"none", letterSpacing:"1px" }}>Privacy Policy</a>
+        <Link href="/privacy" className="font-body" style={{ fontSize:"12px", color:"#6B4F3A", textDecoration:"none", letterSpacing:"1px" }}>Privacy Policy</Link>
       </footer>
     </main>
   );
