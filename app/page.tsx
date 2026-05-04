@@ -122,6 +122,11 @@ function ContactForm() {
   );
 }
 export default function Home() {
+  // ── onboarding ──
+  const [userType, setUserType] = useState<null | "client" | "braider" | "new">(null);
+  const [nearbyBraidersCount, setNearbyBraidersCount] = useState(0);
+  const [userCity, setUserCity] = useState<string | null>(null);
+
   // ── city search ──
   const [citySearch, setCitySearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -167,6 +172,36 @@ export default function Home() {
     }
     load();
   }, []);
+
+  // ── geolocation for quick win ──
+  useEffect(() => {
+    if (typeof window === "undefined" || !("geolocation" in navigator)) return;
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          const city = data.address?.city || data.address?.town || data.address?.village || null;
+          
+          if (city) {
+            setUserCity(city);
+            const count = braiders.filter((b) => normalizeCityName(b.city) === normalizeCityName(city)).length;
+            setNearbyBraidersCount(count);
+          }
+        } catch (e) {
+          console.error("Geolocation error:", e);
+        }
+      },
+      () => {
+        // Geolocation denied or unavailable — use default
+        console.log("Geolocation not available");
+      }
+    );
+  }, [braiders]);
 
   // ── braider signup ──
   const [braiderStep, setBraiderStep] = useState(1);
@@ -290,30 +325,30 @@ export default function Home() {
         body{background:#F7F3EE;}
         .font-display{font-family:'Playfair Display',Georgia,serif;}
         .font-body{font-family:'Lato',sans-serif;}
-        .btn-primary{background:#7A3B1E;color:#F7F3EE;padding:14px 36px;border:none;cursor:pointer;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:background .25s;}
-        .btn-primary:hover{background:#5C2A12;}
+        .btn-primary{background:#3D5212;color:#F7F3EE;padding:14px 36px;border:none;cursor:pointer;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:background .25s;}
+        .btn-primary:hover{background:#2E3D0D;}
         .btn-primary:disabled{background:#C9BFB3;cursor:not-allowed;}
         .btn-outline{background:transparent;color:#2C1A0E;padding:14px 36px;border:1.5px solid #2C1A0E;cursor:pointer;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:all .25s;}
         .btn-outline:hover{background:#2C1A0E;color:#F7F3EE;}
-        .btn-sm{background:#7A3B1E;color:#F7F3EE;padding:6px 14px;border:none;cursor:pointer;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+        .btn-sm{background:#3D5212;color:#F7F3EE;padding:6px 14px;border:none;cursor:pointer;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
         .btn-ghost{background:transparent;color:#9E8070;padding:6px 10px;border:1px solid #D6CEC4;cursor:pointer;font-family:'Lato',sans-serif;font-size:11px;}
         .card{background:#EDE7DF;border:1px solid #D6CEC4;overflow:hidden;}
         .video-frame{width:100%;aspect-ratio:9/16;background:#C9BFB3;position:relative;overflow:hidden;}
         .input-field{width:100%;background:transparent;border:none;border-bottom:1.5px solid #9E8070;padding:10px 4px;font-family:'Lato',sans-serif;font-size:14px;color:#2C1A0E;outline:none;transition:border-color .2s;}
-        .input-field:focus{border-bottom-color:#7A3B1E;}
+        .input-field:focus{border-bottom-color:#3D5212;}
         .input-field::placeholder{color:#A89080;}
         .select-field{width:100%;background:transparent;border:none;border-bottom:1.5px solid #9E8070;padding:10px 4px;font-family:'Lato',sans-serif;font-size:14px;color:#2C1A0E;outline:none;appearance:none;cursor:pointer;}
         .tag{display:inline-block;background:#D6CEC4;color:#5C3A22;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;}
-        .divider{width:60px;height:2px;background:#7A3B1E;margin:20px 0;}
+        .divider{width:60px;height:2px;background:#3D5212;margin:20px 0;}
         .section-label{font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#6B8F5E;margin-bottom:16px;}
         .city-item:hover{background:#EDE7DF;}
         .day-btn{padding:8px 12px;border:1.5px solid #D6CEC4;background:transparent;cursor:pointer;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;color:#5C3A22;transition:all .2s;}
-        .day-btn.active{background:#7A3B1E;border-color:#7A3B1E;color:#F7F3EE;}
+        .day-btn.active{background:#3D5212;border-color:#3D5212;color:#F7F3EE;}
         .service-card{flex:1;padding:14px 10px;border:1.5px solid #D6CEC4;background:transparent;cursor:pointer;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#5C3A22;text-align:center;transition:all .2s;}
         .service-card.active{background:#2C1A0E;border-color:#2C1A0E;color:#F7F3EE;}
         .step-indicator{display:flex;gap:8px;margin-bottom:32px;}
         .step-dot{width:28px;height:4px;background:#D6CEC4;transition:background .3s;}
-        .step-dot.active{background:#7A3B1E;}
+        .step-dot.active{background:#3D5212;}
         .hero-img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88);}
         .hero-img-card{overflow:hidden;position:relative;border-radius:2px;height:180px;}
         .hero-img-label{position:absolute;bottom:0;left:0;right:0;padding:24px 12px 10px;background:linear-gradient(to top,rgba(44,26,14,.72),transparent);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F7F3EE;}
@@ -338,13 +373,142 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ── HERO ── */}
+      {/* ── HOOK: Full screen, one powerful sentence, two buttons ── */}
+      <section style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"80px 48px", backgroundColor:"#F5F0E8", textAlign:"center" }}>
+        <h2 className="font-display" style={{ fontSize:"72px", fontWeight:700, lineHeight:1.2, color:"#31260C", marginBottom:"48px", maxWidth:"900px" }}>
+          Find your trusted braider in minutes, not weeks
+        </h2>
+        <div style={{ display:"flex", gap:"24px", justifyContent:"center", flexWrap:"wrap" }}>
+          <button className="btn-primary" onClick={() => document.getElementById("personalization")?.scrollIntoView({ behavior:"smooth" })}>
+            I need my hair done
+          </button>
+          <button className="btn-primary" onClick={() => document.getElementById("personalization")?.scrollIntoView({ behavior:"smooth" })}>
+            I am a braider
+          </button>
+        </div>
+      </section>
+
+      {/* ── PERSONALIZATION CARDS ── */}
+      <section id="personalization" style={{ padding:"80px 48px", backgroundColor:"#F7F3EE", borderTop:"1px solid #D6CEC4" }}>
+        <div style={{ maxWidth:"900px", margin:"0 auto", textAlign:"center" }}>
+          <h3 className="font-display" style={{ fontSize:"36px", fontWeight:700, color:"#31260C", marginBottom:"12px" }}>What brings you here?</h3>
+          <p className="font-body" style={{ fontSize:"16px", color:"#73673D", marginBottom:"48px" }}>Choose your path</p>
+          
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(280px, 1fr))", gap:"24px" }}>
+            {/* Client Card */}
+            <div 
+              onClick={() => { setUserType("client"); document.getElementById("problem")?.scrollIntoView({ behavior:"smooth" }); }}
+              style={{ 
+                padding:"40px 24px", 
+                backgroundColor:userType === "client" ? "#3D5212" : "#E8EDE0", 
+                color:userType === "client" ? "#F5F0E8" : "#31260C",
+                cursor:"pointer", 
+                borderRadius:"4px", 
+                transition:"all .3s",
+                border:userType === "client" ? "2px solid #3D5212" : "2px solid transparent"
+              }}
+              onMouseEnter={(e) => { if(userType !== "client") e.currentTarget.style.backgroundColor = "#DDE3D6"; }}
+              onMouseLeave={(e) => { if(userType !== "client") e.currentTarget.style.backgroundColor = "#E8EDE0"; }}
+            >
+              <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>I need my hair done</p>
+              <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Find trusted braiders with real video proof of their work</p>
+            </div>
+
+            {/* Braider Card */}
+            <div 
+              onClick={() => { setUserType("braider"); document.getElementById("problem")?.scrollIntoView({ behavior:"smooth" }); }}
+              style={{ 
+                padding:"40px 24px", 
+                backgroundColor:userType === "braider" ? "#3D5212" : "#E8EDE0", 
+                color:userType === "braider" ? "#F5F0E8" : "#31260C",
+                cursor:"pointer", 
+                borderRadius:"4px", 
+                transition:"all .3s",
+                border:userType === "braider" ? "2px solid #3D5212" : "2px solid transparent"
+              }}
+              onMouseEnter={(e) => { if(userType !== "braider") e.currentTarget.style.backgroundColor = "#DDE3D6"; }}
+              onMouseLeave={(e) => { if(userType !== "braider") e.currentTarget.style.backgroundColor = "#E8EDE0"; }}
+            >
+              <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>I am a braider</p>
+              <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Get visibility to clients actively looking for you</p>
+            </div>
+
+            {/* New to city Card */}
+            <div 
+              onClick={() => { setUserType("new"); document.getElementById("problem")?.scrollIntoView({ behavior:"smooth" }); }}
+              style={{ 
+                padding:"40px 24px", 
+                backgroundColor:userType === "new" ? "#3D5212" : "#E8EDE0", 
+                color:userType === "new" ? "#F5F0E8" : "#31260C",
+                cursor:"pointer", 
+                borderRadius:"4px", 
+                transition:"all .3s",
+                border:userType === "new" ? "2px solid #3D5212" : "2px solid transparent"
+              }}
+              onMouseEnter={(e) => { if(userType !== "new") e.currentTarget.style.backgroundColor = "#DDE3D6"; }}
+              onMouseLeave={(e) => { if(userType !== "new") e.currentTarget.style.backgroundColor = "#E8EDE0"; }}
+            >
+              <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>I'm new to the city</p>
+              <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Lost? Find your people and your braider</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROBLEM SECTION: Dual version based on userType ── */}
+      {userType && (
+        <section id="problem" style={{ padding:"80px 48px", backgroundColor:userType ? "#31260C" : "transparent", color:"#F5F0E8", borderTop:"1px solid #3D5212" }}>
+          <div style={{ maxWidth:"700px", margin:"0 auto", textAlign:"center" }}>
+            {userType === "client" && (
+              <>
+                <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+                  You've scrolled Instagram for hours
+                </h2>
+                <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"16px" }}>
+                  Looking for a braider in your city. Nothing. You asked friends. You texted her cousin. You waited weeks.
+                </p>
+                <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"0" }}>
+                  <strong>This is the way it has always been.</strong> Until now.
+                </p>
+              </>
+            )}
+            {userType === "braider" && (
+              <>
+                <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+                  You can braid beautifully
+                </h2>
+                <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"16px" }}>
+                  But your clients only know you exist if they happen to know you. Your talent is invisible.
+                </p>
+                <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"0" }}>
+                  <strong>You could do 20 bookings a week, but nobody knows.</strong> Until now.
+                </p>
+              </>
+            )}
+            {userType === "new" && (
+              <>
+                <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+                  New city. No connections.
+                </h2>
+                <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"16px" }}>
+                  You don't know anyone. You don't know where to find anything. The city feels big and lonely.
+                </p>
+                <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"0" }}>
+                  <strong>How do you find your people?</strong> We help with that.
+                </p>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── HERO (Repositioned) ── */}
       <section style={{ padding:"80px 48px 60px", maxWidth:"1100px", margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:"48px" }}>
           <p className="section-label">For Black women across Germany</p>
           <h1 className="font-display hero-title" style={{ fontSize:"54px", fontWeight:700, lineHeight:1.15, color:"#2C1A0E", marginBottom:"16px" }}>
             Find a trusted braider near you<br />
-            <em style={{ fontWeight:400, color:"#7A3B1E" }}>in minutes, not weeks</em>
+            <em style={{ fontWeight:400, color:"#3D5212" }}>in minutes, not weeks</em>
           </h1>
           <p className="font-body" style={{ fontSize:"14px", color:"#2C1A0E", opacity:.45, marginBottom:"4px", letterSpacing:".5px" }}>
             Your next favourite braider is closer than you think
@@ -459,7 +623,7 @@ export default function Home() {
                       {braider.photoUrl
                         ? <img src={braider.photoUrl} alt={braider.name} style={{ width:"100%", height:"100%", objectFit:"cover" }} />
                         : <>
-                            <div style={{ width:"48px", height:"48px", borderRadius:"50%", backgroundColor:"#7A3B1E", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                            <div style={{ width:"48px", height:"48px", borderRadius:"50%", backgroundColor:"#3D5212", display:"flex", alignItems:"center", justifyContent:"center" }}>
                               <svg width="18" height="18" viewBox="0 0 24 24" fill="#F7F3EE"><path d="M8 5v14l11-7z"/></svg>
                             </div>
                             <span className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#5C3A22" }}>Video Portfolio</span>
@@ -474,7 +638,7 @@ export default function Home() {
                       <h3 className="font-display" style={{ fontSize:"20px", fontWeight:600, marginBottom:"4px" }}>{braider.name}</h3>
                       <span className="tag">{braider.city}</span>
                     </div>
-                    <span className="font-body" style={{ fontSize:"15px", fontWeight:700, color:"#7A3B1E" }}>{braider.price}</span>
+                    <span className="font-body" style={{ fontSize:"15px", fontWeight:700, color:"#3D5212" }}>{braider.price}</span>
                   </div>
                   <p className="font-body" style={{ fontSize:"13px", color:"#7A5C48", marginBottom:"6px", lineHeight:1.6 }}>{braider.styles}</p>
                   {braider.transportStop && (
@@ -514,7 +678,7 @@ export default function Home() {
             ].map((review) => (
               <div key={review.name} style={{ backgroundColor:"#EDE7DF", padding:"20px", border:"1px solid #D6CEC4" }}>
                 <div style={{ display:"flex", gap:"4px", marginBottom:"12px" }}>
-                  {Array.from({ length:review.stars }).map((_,i) => <span key={i} style={{ color:"#7A3B1E", fontSize:"12px" }}>★</span>)}
+                  {Array.from({ length:review.stars }).map((_,i) => <span key={i} style={{ color:"#3D5212", fontSize:"12px" }}>★</span>)}
                 </div>
                 <p className="font-body" style={{ fontSize:"13px", lineHeight:1.7, color:"#5C3A22", marginBottom:"16px", fontStyle:"italic" }}>"{review.review}"</p>
                 <div style={{ borderTop:"1px solid #D6CEC4", paddingTop:"12px" }}>
@@ -527,19 +691,34 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── QUICK WIN: Geolocation + Braiders Count ── */}
+      <section style={{ padding:"80px 48px", backgroundColor:"#3D5212", color:"#F5F0E8", textAlign:"center" }}>
+        <div style={{ maxWidth:"700px", margin:"0 auto" }}>
+          <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+            There are {nearbyBraidersCount > 0 ? nearbyBraidersCount : "3+"} braiders near {userCity || "you"} ready this weekend
+          </h2>
+          <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"36px" }}>
+            Real video portfolios, real prices, real availability. Everything you need to book with confidence.
+          </p>
+          <a href="#braiders">
+            <button className="btn-primary" style={{ backgroundColor:"#F5F0E8", color:"#3D5212" }}>See them now</button>
+          </a>
+        </div>
+      </section>
+
       {/* ── HOW IT WORKS ── */}
       <section style={{ backgroundColor:"#EDE7DF", padding:"80px 48px" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <p className="section-label">Simple by design</p>
-          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"56px" }}>How Braidely works</h2>
+          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"56px" }}>The Braidely way</h2>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"48px" }} className="grid-3">
             {[
-              { step:"01", title:"Discover", body:"Browse real video portfolios from Black hair braiders near you. See their price list, location, and availability before you decide." },
-              { step:"02", title:"Book", body:"Choose your style, pick a date, and send one booking request. Your braider confirms and you get a confirmation email." },
-              { step:"03", title:"Review", body:"After your appointment, share a short review. Help other Black women in the community find great braiders." },
+              { step:"01", title:"Stop asking around", body:"Stop scrolling. Stop asking friends. Stop waiting weeks. See real braiders with real video proof, transparent pricing, and actual availability in your city." },
+              { step:"02", title:"Claim your date", body:"Pick your style, choose the date that works for you, send one booking request. Your braider confirms instantly. You get all the details you need." },
+              { step:"03", title:"Help the next woman", body:"After your appointment, share what it was like. Your honest review helps the next Black woman in your city find her braider without the guesswork." },
             ].map((item) => (
               <div key={item.step}>
-                <span className="font-display" style={{ fontSize:"48px", fontWeight:700, color:"#D6CEC4", lineHeight:1 }}>{item.step}</span>
+                <span className="font-display" style={{ fontSize:"48px", fontWeight:700, color:"#3D5212", lineHeight:1 }}>{item.step}</span>
                 <div className="divider" />
                 <h3 className="font-display" style={{ fontSize:"22px", fontWeight:600, marginBottom:"12px" }}>{item.title}</h3>
                 <p className="font-body" style={{ fontSize:"14px", lineHeight:1.8, color:"#5C3A22" }}>{item.body}</p>
@@ -562,7 +741,7 @@ export default function Home() {
           {/* ── CLIENT FORM ── */}
           <div>
             <div style={{ display:"flex", alignItems:"center", gap:"16px", marginBottom:"32px" }}>
-              <div style={{ width:"3px", height:"40px", backgroundColor:"#7A3B1E" }} />
+              <div style={{ width:"3px", height:"40px", backgroundColor:"#3D5212" }} />
               <h3 className="font-display" style={{ fontSize:"24px", fontWeight:600 }}>I am looking for a braider</h3>
             </div>
 
@@ -879,7 +1058,7 @@ export default function Home() {
         ) : (
           <form onSubmit={(e) => { e.preventDefault(); setNotifySubmitted(true); }} style={{ display:"flex", justifyContent:"center", maxWidth:"460px", margin:"0 auto" }}>
             <input type="email" placeholder="Enter your email address" value={notifyEmail} onChange={(e) => setNotifyEmail(e.target.value)} required style={{ flex:1, backgroundColor:"transparent", border:"1px solid #5C3A22", borderRight:"none", padding:"14px 20px", color:"#F7F3EE", fontFamily:"'Lato',sans-serif", fontSize:"14px", outline:"none" }} />
-            <button type="submit" style={{ backgroundColor:"#7A3B1E", color:"#F7F3EE", border:"1px solid #7A3B1E", padding:"14px 28px", fontFamily:"'Lato',sans-serif", fontSize:"12px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", cursor:"pointer", whiteSpace:"nowrap" }}>Notify Me</button>
+            <button type="submit" style={{ backgroundColor:"#3D5212", color:"#F7F3EE", border:"1px solid #3D5212", padding:"14px 28px", fontFamily:"'Lato',sans-serif", fontSize:"12px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", cursor:"pointer", whiteSpace:"nowrap" }}>Notify Me</button>
           </form>
         )}
       </section>
