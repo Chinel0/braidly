@@ -505,24 +505,24 @@ export default function Home() {
       </section>
 
       {/* ── REVIEWS ── */}
-      <section style={{ backgroundColor:"#F7F3EE", padding:"80px 48px", borderTop:"1px solid #D6CEC4", borderBottom:"1px solid #D6CEC4" }}>
+      <section style={{ backgroundColor:"#F7F3EE", padding:"60px 24px", borderTop:"1px solid #D6CEC4", borderBottom:"1px solid #D6CEC4" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <p className="section-label">Trusted by the community</p>
-          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"48px" }}>What clients are saying</h2>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"28px" }} className="grid-3">
+          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"40px" }}>What clients are saying</h2>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"20px" }} className="grid-3">
             {[
-              { name:"Adaeze O.", city:"Munich", review:"I found my braider in 10 minutes. She came to my home, did the most beautiful knotless braids and her price was so fair. Never going back to the salon.", style:"Knotless Braids", stars:5 },
-              { name:"Blessing N.", city:"Berlin", review:"I was so nervous going to a stranger's home but her profile had everything — price, location, video. I knew exactly what I was getting before I arrived.", style:"Box Braids", stars:5 },
+              { name:"Zara M.", city:"Munich", review:"I found my braider in 10 minutes. She came to my home, did the most beautiful knotless braids and her price was so fair. Never going back to the salon.", style:"Knotless Braids", stars:5 },
+              { name:"Emma L.", city:"Berlin", review:"I was so nervous going to a stranger's home but her profile had everything — price, location, video. I knew exactly what I was getting before I arrived.", style:"Box Braids", stars:5 },
               { name:"Yetunde A.", city:"Frankfurt", review:"As a braider, I got three new clients in my first week on Braidely. Women in my city finally know I exist.", style:"Braider — Senegalese Twists", stars:5 },
             ].map((review) => (
-              <div key={review.name} style={{ backgroundColor:"#EDE7DF", padding:"28px", border:"1px solid #D6CEC4" }}>
-                <div style={{ display:"flex", gap:"4px", marginBottom:"16px" }}>
-                  {Array.from({ length:review.stars }).map((_,i) => <span key={i} style={{ color:"#7A3B1E", fontSize:"14px" }}>★</span>)}
+              <div key={review.name} style={{ backgroundColor:"#EDE7DF", padding:"20px", border:"1px solid #D6CEC4" }}>
+                <div style={{ display:"flex", gap:"4px", marginBottom:"12px" }}>
+                  {Array.from({ length:review.stars }).map((_,i) => <span key={i} style={{ color:"#7A3B1E", fontSize:"12px" }}>★</span>)}
                 </div>
-                <p className="font-body" style={{ fontSize:"14px", lineHeight:1.8, color:"#5C3A22", marginBottom:"20px", fontStyle:"italic" }}>"{review.review}"</p>
-                <div style={{ borderTop:"1px solid #D6CEC4", paddingTop:"16px" }}>
-                  <p className="font-body" style={{ fontSize:"13px", fontWeight:700, color:"#2C1A0E" }}>{review.name}</p>
-                  <p className="font-body" style={{ fontSize:"11px", color:"#9E8070", letterSpacing:"1px", textTransform:"uppercase", marginTop:"2px" }}>{review.city} · {review.style}</p>
+                <p className="font-body" style={{ fontSize:"13px", lineHeight:1.7, color:"#5C3A22", marginBottom:"16px", fontStyle:"italic" }}>"{review.review}"</p>
+                <div style={{ borderTop:"1px solid #D6CEC4", paddingTop:"12px" }}>
+                  <p className="font-body" style={{ fontSize:"12px", fontWeight:700, color:"#2C1A0E" }}>{review.name}</p>
+                  <p className="font-body" style={{ fontSize:"10px", color:"#9E8070", letterSpacing:"0.5px", textTransform:"uppercase", marginTop:"2px" }}>{review.city} · {review.style}</p>
                 </div>
               </div>
             ))}
