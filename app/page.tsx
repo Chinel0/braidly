@@ -375,14 +375,15 @@ export default function Home() {
 
       {/* ── HOOK: Full screen, one powerful sentence, two buttons ── */}
       <section style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"80px 48px", backgroundColor:"#F5F0E8", textAlign:"center" }}>
+        <p className="section-label" style={{ marginBottom:"18px" }}>For Black women across Germany</p>
         <h2 className="font-display" style={{ fontSize:"72px", fontWeight:700, lineHeight:1.2, color:"#31260C", marginBottom:"48px", maxWidth:"900px" }}>
           Find your trusted braider in minutes, not weeks
         </h2>
         <div style={{ display:"flex", gap:"24px", justifyContent:"center", flexWrap:"wrap" }}>
-          <button className="btn-primary" onClick={() => document.getElementById("personalization")?.scrollIntoView({ behavior:"smooth" })}>
-            I need my hair done
+          <button className="btn-primary" onClick={() => document.getElementById("braiders")?.scrollIntoView({ behavior:"smooth" })}>
+            Browse Braiders
           </button>
-          <button className="btn-primary" onClick={() => document.getElementById("personalization")?.scrollIntoView({ behavior:"smooth" })}>
+          <button className="btn-outline" onClick={() => document.getElementById("join")?.scrollIntoView({ behavior:"smooth" })}>
             I am a braider
           </button>
         </div>
@@ -502,48 +503,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* ── HERO (Repositioned) ── */}
-      <section style={{ padding:"80px 48px 60px", maxWidth:"1100px", margin:"0 auto" }}>
-        <div style={{ textAlign:"center", marginBottom:"48px" }}>
-          <p className="section-label">For Black women across Germany</p>
-          <h1 className="font-display hero-title" style={{ fontSize:"54px", fontWeight:700, lineHeight:1.15, color:"#2C1A0E", marginBottom:"16px" }}>
-            Find a trusted braider near you<br />
-            <em style={{ fontWeight:400, color:"#3D5212" }}>in minutes, not weeks</em>
-          </h1>
-          <p className="font-body" style={{ fontSize:"14px", color:"#2C1A0E", opacity:.45, marginBottom:"4px", letterSpacing:".5px" }}>
-            Your next favourite braider is closer than you think
-          </p>
-          <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, color:"#5C3A22", maxWidth:"540px", margin:"16px auto 36px" }}>
-            Browse real video portfolios from skilled Black hair braiders in your city. See their work, check availability, and book — all in one place.
-          </p>
-          <p className="font-body" style={{ fontSize:"13px", color:"#6B8F5E", maxWidth:"480px", margin:"0 auto 36px", padding:"12px 16px", backgroundColor:"#EDE7DF", borderLeft:"3px solid #6B8F5E", textAlign:"left", lineHeight:1.7 }}>
-            Find. Book. Show up. No questions needed — every braider profile tells you exactly what to expect before you arrive.
-          </p>
-          <div style={{ display:"flex", gap:"16px", justifyContent:"center", flexWrap:"wrap" }}>
-            <a href="#braiders"><button className="btn-primary">Browse Braiders</button></a>
-            <a href="#join"><button className="btn-outline">I am a Braider</button></a>
-          </div>
-        </div>
-
-        {/* Hero images */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", maxWidth:"720px", margin:"0 auto" }} className="hero-img-grid">
-          {heroImages.map((img) => (
-            <div key={img.label} className="hero-img-card">
-              <img src={img.url} alt={img.alt} className="hero-img" />
-              <div className="hero-img-label">{img.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ display:"flex", justifyContent:"center", gap:"32px", marginTop:"28px", flexWrap:"wrap" }}>
-          {["Knotless Braids","Box Braids","Locs","Twists","Crochet","Fulani"].map((s) => (
-            <span key={s} className="font-body" style={{ fontSize:"12px", color:"#6B8F5E", letterSpacing:"1px" }}>
-              <span className="sage-dot" />{s}
-            </span>
-          ))}
-        </div>
-      </section>
-
       {/* ── PAIN POINT ── */}
       <section style={{ backgroundColor:"#2C1A0E", color:"#F7F3EE", padding:"72px 48px" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
@@ -574,10 +533,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── EXPLORE BRAIDERS ── */}
+      {/* ── SHOW MAGIC ── */}
       <section id="braiders" style={{ padding:"80px 48px", maxWidth:"1200px", margin:"0 auto" }}>
-        <p className="section-label">Browse portfolios</p>
-        <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"8px" }}>Explore Braiders</h2>
+        <p className="section-label">Show the magic</p>
+        <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"8px" }}>Braider videos with real proof</h2>
         <p className="font-body" style={{ fontSize:"15px", color:"#7A5C48", marginBottom:"48px" }}>Watch their work. Choose your style. Book directly.</p>
 
         {/* City search */}
@@ -665,26 +624,28 @@ export default function Home() {
         )}
       </section>
 
-      {/* ── REVIEWS ── */}
-      <section style={{ backgroundColor:"#F7F3EE", padding:"60px 24px", borderTop:"1px solid #D6CEC4", borderBottom:"1px solid #D6CEC4" }}>
+      {/* ── SOLUTION ── */}
+      <section style={{ padding:"80px 48px", backgroundColor:"#F5F0E8", borderTop:"1px solid #D6CEC4" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
-          <p className="section-label">Trusted by the community</p>
-          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"40px" }}>What clients are saying</h2>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"20px" }} className="grid-3">
-            {[
-              { name:"Zara M.", city:"Munich", review:"I found my braider in 10 minutes. She came to my home, did the most beautiful knotless braids and her price was so fair. Never going back to the salon.", style:"Knotless Braids", stars:5 },
-              { name:"Emma L.", city:"Berlin", review:"I was so nervous going to a stranger's home but her profile had everything — price, location, video. I knew exactly what I was getting before I arrived.", style:"Box Braids", stars:5 },
-              { name:"Yetunde A.", city:"Frankfurt", review:"As a braider, I got three new clients in my first week on Braidely. Women in my city finally know I exist.", style:"Braider — Senegalese Twists", stars:5 },
-            ].map((review) => (
-              <div key={review.name} style={{ backgroundColor:"#EDE7DF", padding:"20px", border:"1px solid #D6CEC4" }}>
-                <div style={{ display:"flex", gap:"4px", marginBottom:"12px" }}>
-                  {Array.from({ length:review.stars }).map((_,i) => <span key={i} style={{ color:"#3D5212", fontSize:"12px" }}>★</span>)}
-                </div>
-                <p className="font-body" style={{ fontSize:"13px", lineHeight:1.7, color:"#5C3A22", marginBottom:"16px", fontStyle:"italic" }}>"{review.review}"</p>
-                <div style={{ borderTop:"1px solid #D6CEC4", paddingTop:"12px" }}>
-                  <p className="font-body" style={{ fontSize:"12px", fontWeight:700, color:"#2C1A0E" }}>{review.name}</p>
-                  <p className="font-body" style={{ fontSize:"10px", color:"#9E8070", letterSpacing:"0.5px", textTransform:"uppercase", marginTop:"2px" }}>{review.city} · {review.style}</p>
-                </div>
+          <p className="section-label">Solution</p>
+          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"36px" }}>What happens next</h2>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"24px" }} className="grid-3">
+            {userType === "braider" ? [
+              "Get seen by clients who are already looking for a braider in your city.",
+              "Turn your work into bookings with a profile that shows your skill before they message you.",
+              "Build a steady client base on your terms, without relying on word of mouth.",
+            ] : userType === "new" ? [
+              "Find the people, services, and braiders that make a new city feel familiar.",
+              "See who is nearby, what they charge, and when they are available before you commit.",
+              "Move from lost to settled with one place for hair and community.",
+            ] : [
+              "See real braiders in your city with video proof of their work.",
+              "Check pricing and availability before you book.",
+              "Book with confidence instead of guessing.",
+            ].map((statement) => (
+              <div key={statement} style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4" }}>
+                <div style={{ width:"40px", height:"2px", backgroundColor:"#3D5212", marginBottom:"16px" }} />
+                <p className="font-display" style={{ fontSize:"18px", lineHeight:1.6, color:"#31260C" }}>{statement}</p>
               </div>
             ))}
           </div>
@@ -722,6 +683,32 @@ export default function Home() {
                 <div className="divider" />
                 <h3 className="font-display" style={{ fontSize:"22px", fontWeight:600, marginBottom:"12px" }}>{item.title}</h3>
                 <p className="font-body" style={{ fontSize:"14px", lineHeight:1.8, color:"#5C3A22" }}>{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── REVIEWS ── */}
+      <section style={{ backgroundColor:"#F7F3EE", padding:"60px 24px", borderTop:"1px solid #D6CEC4", borderBottom:"1px solid #D6CEC4" }}>
+        <div style={{ maxWidth:"900px", margin:"0 auto" }}>
+          <p className="section-label">Trusted by the community</p>
+          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"40px" }}>What clients are saying</h2>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"20px" }} className="grid-3">
+            {[
+              { name:"Zara M.", city:"Munich", review:"I found my braider in 10 minutes. She came to my home, did the most beautiful knotless braids and her price was so fair. Never going back to the salon.", style:"Knotless Braids", stars:5 },
+              { name:"Emma L.", city:"Berlin", review:"I was so nervous going to a stranger's home but her profile had everything — price, location, video. I knew exactly what I was getting before I arrived.", style:"Box Braids", stars:5 },
+              { name:"Yetunde A.", city:"Frankfurt", review:"As a braider, I got three new clients in my first week on Braidely. Women in my city finally know I exist.", style:"Braider — Senegalese Twists", stars:5 },
+            ].map((review) => (
+              <div key={review.name} style={{ backgroundColor:"#EDE7DF", padding:"20px", border:"1px solid #D6CEC4" }}>
+                <div style={{ display:"flex", gap:"4px", marginBottom:"12px" }}>
+                  {Array.from({ length:review.stars }).map((_,i) => <span key={i} style={{ color:"#3D5212", fontSize:"12px" }}>★</span>)}
+                </div>
+                <p className="font-body" style={{ fontSize:"13px", lineHeight:1.7, color:"#5C3A22", marginBottom:"16px", fontStyle:"italic" }}>"{review.review}"</p>
+                <div style={{ borderTop:"1px solid #D6CEC4", paddingTop:"12px" }}>
+                  <p className="font-body" style={{ fontSize:"12px", fontWeight:700, color:"#2C1A0E" }}>{review.name}</p>
+                  <p className="font-body" style={{ fontSize:"10px", color:"#9E8070", letterSpacing:"0.5px", textTransform:"uppercase", marginTop:"2px" }}>{review.city} · {review.style}</p>
+                </div>
               </div>
             ))}
           </div>
