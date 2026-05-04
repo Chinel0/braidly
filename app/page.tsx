@@ -116,10 +116,7 @@ function ContactForm() {
       </button>
 
       <p className="font-body" style={{ fontSize:"11px", color:"#A89080", lineHeight:1.6 }}>
-        We respond to all messages within 48 hours. You can also reach us directly at{" "}
-        <a href="mailto:Nwekecl16046@gmail.com" style={{ color:"#7A3B1E" }}>
-          Nwekecl16046@gmail.com
-        </a>
+        We respond to all messages within 48 hours.
       </p>
     </form>
   );
