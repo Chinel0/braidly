@@ -335,7 +335,7 @@ export default function Home() {
       {/* ── NAV ── */}
       <nav style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"22px 48px", borderBottom:"1px solid #D6CEC4", backgroundColor:"#F7F3EE", position:"sticky", top:0, zIndex:100 }}>
         <span className="font-display" style={{ fontSize:"22px", fontWeight:600, letterSpacing:"-0.5px", color:"#2C1A0E" }}>Braidely</span>
-        <div style={{ display:"flex", gap:"24px", alignItems:"center" }}>
+        <div style={{ display:"flex", gap:"12px", alignItems:"center" }}>
           <a href="#braiders" style={{ fontFamily:"'Lato',sans-serif", fontSize:"12px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", color:"#2C1A0E", textDecoration:"none" }}>Browse Braiders</a>
           <a href="#join"><button className="btn-primary" style={{ padding:"10px 24px" }}>Join Free</button></a>
         </div>
