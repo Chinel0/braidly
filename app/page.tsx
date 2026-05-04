@@ -11,9 +11,9 @@ function normalizeCityName(value: string) {
 }
 
 const heroImages = [
-  { url: "/knotless_braid.jpg", alt: "Black woman with knotless braids", label: "Knotless Braids" },
-  { url: "/wig.jpg", alt: "Black woman with wig style", label: "Wig Style" },
-  { url: "/locs.jpg", alt: "Black woman with locs", label: "Goddess Locs" },
+  { url: "file:///C:/Users/nweke/Downloads/knotless_braid.jpg", alt: "Black woman with knotless braids", label: "Knotless Braids" },
+  { url: "file:///C:/Users/nweke/Downloads/wig.jpg", alt: "Black woman with wig style", label: "Wig Style" },
+  { url: "file:///C:/Users/nweke/Downloads/locs.jpg", alt: "Black woman with locs", label: "Goddess Locs" },
 ];
 
 const DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
@@ -387,6 +387,15 @@ export default function Home() {
             I am a braider
           </button>
         </div>
+        {/* hero images under the hook */}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", maxWidth:"900px", margin:"36px auto 0" }} className="hero-img-grid">
+          {heroImages.map((img) => (
+            <div key={img.label} className="hero-img-card">
+              <img src={img.url} alt={img.alt} className="hero-img" />
+              <div className="hero-img-label">{img.label}</div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ── PERSONALIZATION CARDS ── */}
@@ -535,7 +544,7 @@ export default function Home() {
 
       {/* ── SHOW MAGIC ── */}
       <section id="braiders" style={{ padding:"80px 48px", maxWidth:"1200px", margin:"0 auto" }}>
-        <p className="section-label">Show the magic</p>
+        {/* section label intentionally removed to reduce redundancy */}
         <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"8px" }}>Braider videos with real proof</h2>
         <p className="font-body" style={{ fontSize:"15px", color:"#7A5C48", marginBottom:"48px" }}>Watch their work. Choose your style. Book directly.</p>
 
@@ -629,7 +638,7 @@ export default function Home() {
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <p className="section-label">Solution</p>
           <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"36px" }}>What happens next</h2>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"24px" }} className="grid-3">
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"24px" }} className="grid-3">
             {userType === "braider" ? [
               "Get seen by clients who are already looking for a braider in your city.",
               "Turn your work into bookings with a profile that shows your skill before they message you.",
@@ -648,6 +657,14 @@ export default function Home() {
                 <p className="font-display" style={{ fontSize:"18px", lineHeight:1.6, color:"#31260C" }}>{statement}</p>
               </div>
             ))}
+            {/* Client-focused solution column */}
+            <div style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4" }}>
+              <div style={{ width:"40px", height:"2px", backgroundColor:"#3D5212", marginBottom:"16px" }} />
+              <h3 className="font-display" style={{ fontSize:"20px", marginBottom:"12px", color:"#31260C" }}>For clients searching</h3>
+              <p className="font-body" style={{ fontSize:"15px", lineHeight:1.6, color:"#5C3A22" }}>
+                Find verified braiders near you with real video portfolios, transparent pricing, and clear availability — book in two taps and get the look you want.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -670,7 +687,7 @@ export default function Home() {
       {/* ── HOW IT WORKS ── */}
       <section style={{ backgroundColor:"#EDE7DF", padding:"80px 48px" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
-          <p className="section-label">Simple by design</p>
+          <p className="section-label">HOW IT WORKS</p>
           <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"56px" }}>The Braidely way</h2>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"48px" }} className="grid-3">
             {[
