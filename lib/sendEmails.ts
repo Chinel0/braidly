@@ -2,6 +2,7 @@ import emailjs from "@emailjs/browser";
 import {
   EMAILJS_SERVICE_ID,
   EMAILJS_TEMPLATE_ID_BRAIDER,
+  EMAILJS_TEMPLATE_ID_BRAIDER_WELCOME,
   EMAILJS_TEMPLATE_ID_CLIENT,
   EMAILJS_PUBLIC_KEY,
 } from "./emailjs";
@@ -34,6 +35,18 @@ export async function sendClientConfirmation(params: {
   await emailjs.send(
     EMAILJS_SERVICE_ID,
     EMAILJS_TEMPLATE_ID_CLIENT,
+    params,
+    EMAILJS_PUBLIC_KEY
+  );
+}
+
+export async function sendBraiderWelcome(params: {
+  braider_name: string;
+  braider_email: string;
+}) {
+  await emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID_BRAIDER_WELCOME,
     params,
     EMAILJS_PUBLIC_KEY
   );

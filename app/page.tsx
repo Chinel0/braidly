@@ -4,7 +4,7 @@ import Link from "next/link";
 import { db } from "../firebase/firebase";
 import { collection, addDoc, getDocs, query, orderBy, Timestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "../lib/cloudinary";
-import { sendBraiderNotification, sendClientConfirmation } from "../lib/sendEmails";
+import { sendBraiderNotification, sendBraiderWelcome, sendClientConfirmation } from "../lib/sendEmails";
 
 function normalizeCityName(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -265,6 +265,10 @@ export default function Home() {
         available: availText, photoUrl, videoUrl,
         createdAt: Timestamp.now(),
       });
+      await sendBraiderWelcome({
+        braider_name: bName,
+        braider_email: bEmail,
+      });
       setBraiderSubmitted(true);
     } catch (err) {
       setBraiderError("Something went wrong. Please try again.");
@@ -513,8 +517,18 @@ export default function Home() {
       )}
 
       {/* ── PAIN POINT ── */}
-      <section style={{ backgroundColor:"#2C1A0E", color:"#F7F3EE", padding:"72px 48px" }}>
-        <div style={{ maxWidth:"900px", margin:"0 auto" }}>
+      <section style={{
+        color:"#F7F3EE",
+        padding:"72px 48px",
+        position:"relative",
+        backgroundImage:"url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1600&q=80')",
+        backgroundSize:"cover",
+        backgroundPosition:"center",
+        backgroundAttachment:"fixed",
+      }}>
+        <div style={{ position:"absolute", inset:0, backgroundColor:"rgba(21,58,11,0.88)" }} />
+        <div style={{ position:"relative", zIndex:1 }}>
+          <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <p className="section-label" style={{ color:"#A8C89A" }}>We understand the struggle</p>
           <h2 className="font-display" style={{ fontSize:"34px", fontWeight:600, lineHeight:1.4, marginBottom:"40px", maxWidth:"680px" }}>
             Finding a skilled, affordable braider in Europe as a Black woman should not be this hard.
@@ -539,6 +553,91 @@ export default function Home() {
               <strong style={{ color:"#F7F3EE" }}>You do not need to be a registered business to join Braidely.</strong> Whether you are a student, a mother, an au pair, or a salon owner — if you can braid, you belong here.
             </p>
           </div>
+          </div>
+        </div>
+      </section>
+
+      {/* GALLERY */}
+      <section style={{ padding:"80px 48px", backgroundColor:"#F5F0E8" }}>
+        <div style={{ maxWidth:"1100px", margin:"0 auto" }}>
+          <p className="section-label">Styles we celebrate</p>
+          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"8px", color:"#31260C" }}>
+            Every braid tells a story
+          </h2>
+          <p className="font-body" style={{ fontSize:"15px", color:"#73673D", marginBottom:"48px" }}>
+            From knotless to goddess locs — find a braider who specialises in exactly what you want.
+          </p>
+
+          {/* Large grid */}
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gridTemplateRows:"auto auto", gap:"12px" }}>
+
+            {/* Large featured image left */}
+            <div style={{ gridColumn:"1", gridRow:"1 / 3", backgroundColor:"#C5BDB0", borderRadius:"2px", minHeight:"420px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/knotless_braid.jpg" alt="Knotless braids" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"20px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Knotless Braids</span>
+              </div>
+            </div>
+
+            {/* Top middle */}
+            <div style={{ backgroundColor:"#B5A898", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/clean_braid.jpg" alt="Clean braid style" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Box Braids</span>
+              </div>
+            </div>
+
+            {/* Top right */}
+            <div style={{ backgroundColor:"#C9BFB3", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/twist.jpg" alt="Twist style" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Fulani Braids</span>
+              </div>
+            </div>
+
+            {/* Bottom middle */}
+            <div style={{ backgroundColor:"#B0A890", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/locs.jpg" alt="Goddess locs" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Goddess Locs</span>
+              </div>
+            </div>
+
+            {/* Bottom right */}
+            <div style={{ backgroundColor:"#C2B8A8", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/natural_hair.jpg" alt="Natural hair" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Senegalese Twists</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom row — three equal */}
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:"12px", marginTop:"12px" }}>
+            {[
+              { style: "Crochet Braids", src: "/wig.jpg" },
+              { style: "Cornrows", src: "/dreadloc_twist.jpg" },
+              { style: "Faux Locs", src: "/knotless_braid.jpg" },
+            ].map((item) => (
+              <div key={item.style} style={{ backgroundColor:"#BDB5A5", borderRadius:"2px", minHeight:"160px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+                <img src={item.src} alt={item.style} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+                <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+                <div style={{ position:"relative", zIndex:1, padding:"14px", width:"100%" }}>
+                  <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>{item.style}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="font-body" style={{ fontSize:"13px", color:"#73673D", textAlign:"center", marginTop:"28px", fontStyle:"italic" }}>
+            When you have real braiders signed up, replace these placeholders with their actual portfolio photos.
+          </p>
         </div>
       </section>
 
