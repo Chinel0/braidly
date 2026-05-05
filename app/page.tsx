@@ -639,25 +639,15 @@ export default function Home() {
           <p className="section-label">Our Solution for You</p>
           <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"36px" }}>What happens next</h2>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px" }} className="grid-3">
-            <div style={{ display:"flex", flexDirection:"column", gap:"16px" }}>
-              {(userType === "braider" ? [
-                "Get seen by clients who are already looking for a braider in your city.",
-                "Turn your work into bookings with a profile that shows your skill before they message you.",
-                "Build a steady client base on your terms, without relying on word of mouth.",
-              ] : userType === "new" ? [
-                "Find the people, services, and braiders that make a new city feel familiar.",
-                "See who is nearby, what they charge, and when they are available before you commit.",
-                "Move from lost to settled with one place for hair and community.",
-              ] : [
-                "See real braiders in your city with video proof of their work.",
-                "Check pricing and availability before you book.",
-                "Book with confidence instead of guessing.",
-              ]).map((statement) => (
-                <div key={statement} style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4" }}>
-                  <div style={{ width:"40px", height:"2px", backgroundColor:"#3D5212", marginBottom:"16px" }} />
-                  <p className="font-display" style={{ fontSize:"18px", lineHeight:1.6, color:"#31260C" }}>{statement}</p>
-                </div>
-              ))}
+            <div style={{ padding:"32px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4", display:"flex", flexDirection:"column", justifyContent:"center" }}>
+              <div style={{ width:"40px", height:"2px", backgroundColor:"#3D5212", marginBottom:"16px" }} />
+              <h3 className="font-display" style={{ fontSize:"22px", marginBottom:"12px", color:"#31260C" }}>For braiders</h3>
+              <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, color:"#5C3A22" }}>
+                Get discovered by clients who need your skills now — show short video clips that prove your technique and style, publish clear pricing and availability, and turn views into paid bookings you can rely on.
+              </p>
+              <p className="font-body" style={{ fontSize:"15px", lineHeight:1.8, color:"#5C3A22", marginTop:"12px" }}>
+                Video-first profiles connect you with clients who desperately need someone they can trust with their hair — meaning better matches and fewer no-shows.
+              </p>
             </div>
             {/* Client-focused column */}
             <div style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4", display:"flex", flexDirection:"column", justifyContent:"center" }}>
