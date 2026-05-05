@@ -11,9 +11,9 @@ function normalizeCityName(value: string) {
 }
 
 const heroImages = [
-  { url: "file:///C:/Users/nweke/Downloads/knotless_braid.jpg", alt: "Black woman with knotless braids", label: "Knotless Braids" },
-  { url: "file:///C:/Users/nweke/Downloads/wig.jpg", alt: "Black woman with wig style", label: "Wig Style" },
-  { url: "file:///C:/Users/nweke/Downloads/locs.jpg", alt: "Black woman with locs", label: "Goddess Locs" },
+  { url: "/knotless_braid.jpg", alt: "Black woman with knotless braids", label: "Knotless Braids" },
+  { url: "/wig.jpg", alt: "Black woman with wig style", label: "Wig Style" },
+  { url: "/locs.jpg", alt: "Black woman with locs", label: "Goddess Locs" },
 ];
 
 const DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
@@ -636,32 +636,34 @@ export default function Home() {
       {/* ── SOLUTION ── */}
       <section style={{ padding:"80px 48px", backgroundColor:"#F5F0E8", borderTop:"1px solid #D6CEC4" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
-          <p className="section-label">Solution</p>
+          <p className="section-label">Our Solution for You</p>
           <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"36px" }}>What happens next</h2>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"24px" }} className="grid-3">
-            {userType === "braider" ? [
-              "Get seen by clients who are already looking for a braider in your city.",
-              "Turn your work into bookings with a profile that shows your skill before they message you.",
-              "Build a steady client base on your terms, without relying on word of mouth.",
-            ] : userType === "new" ? [
-              "Find the people, services, and braiders that make a new city feel familiar.",
-              "See who is nearby, what they charge, and when they are available before you commit.",
-              "Move from lost to settled with one place for hair and community.",
-            ] : [
-              "See real braiders in your city with video proof of their work.",
-              "Check pricing and availability before you book.",
-              "Book with confidence instead of guessing.",
-            ].map((statement) => (
-              <div key={statement} style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4" }}>
-                <div style={{ width:"40px", height:"2px", backgroundColor:"#3D5212", marginBottom:"16px" }} />
-                <p className="font-display" style={{ fontSize:"18px", lineHeight:1.6, color:"#31260C" }}>{statement}</p>
-              </div>
-            ))}
-            {/* Client-focused solution column */}
-            <div style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px" }} className="grid-3">
+            <div style={{ display:"flex", flexDirection:"column", gap:"16px" }}>
+              {(userType === "braider" ? [
+                "Get seen by clients who are already looking for a braider in your city.",
+                "Turn your work into bookings with a profile that shows your skill before they message you.",
+                "Build a steady client base on your terms, without relying on word of mouth.",
+              ] : userType === "new" ? [
+                "Find the people, services, and braiders that make a new city feel familiar.",
+                "See who is nearby, what they charge, and when they are available before you commit.",
+                "Move from lost to settled with one place for hair and community.",
+              ] : [
+                "See real braiders in your city with video proof of their work.",
+                "Check pricing and availability before you book.",
+                "Book with confidence instead of guessing.",
+              ]).map((statement) => (
+                <div key={statement} style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4" }}>
+                  <div style={{ width:"40px", height:"2px", backgroundColor:"#3D5212", marginBottom:"16px" }} />
+                  <p className="font-display" style={{ fontSize:"18px", lineHeight:1.6, color:"#31260C" }}>{statement}</p>
+                </div>
+              ))}
+            </div>
+            {/* Client-focused column */}
+            <div style={{ padding:"24px", backgroundColor:"#E8EDE0", border:"1px solid #D6CEC4", display:"flex", flexDirection:"column", justifyContent:"center" }}>
               <div style={{ width:"40px", height:"2px", backgroundColor:"#3D5212", marginBottom:"16px" }} />
-              <h3 className="font-display" style={{ fontSize:"20px", marginBottom:"12px", color:"#31260C" }}>For clients searching</h3>
-              <p className="font-body" style={{ fontSize:"15px", lineHeight:1.6, color:"#5C3A22" }}>
+              <h3 className="font-display" style={{ fontSize:"22px", marginBottom:"12px", color:"#31260C" }}>For clients searching</h3>
+              <p className="font-body" style={{ fontSize:"15px", lineHeight:1.8, color:"#5C3A22" }}>
                 Find verified braiders near you with real video portfolios, transparent pricing, and clear availability — book in two taps and get the look you want.
               </p>
             </div>
