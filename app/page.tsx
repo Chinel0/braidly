@@ -384,9 +384,9 @@ export default function Home() {
       </nav>
 
       {/* ── HOOK: Full screen, one powerful sentence, two buttons ── */}
-      <section style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"80px 48px", backgroundColor:"#F5F0E8", textAlign:"center" }}>
-        <p className="section-label hero-kicker" style={{ marginBottom:"18px" }}>For Black women across Germany</p>
-        <h2 className="font-display hero-title" style={{ fontSize:"clamp(30px, 7vw, 72px)", fontWeight:700, lineHeight:1.2, color:"#31260C", marginBottom:"48px", maxWidth:"820px" }}>
+      <section style={{ minHeight:"auto", display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"center", padding:"28px 48px 24px", backgroundColor:"#F5F0E8", textAlign:"center" }}>
+        <p className="section-label hero-kicker" style={{ marginBottom:"14px" }}>For Black women across Germany</p>
+        <h2 className="font-display hero-title" style={{ fontSize:"clamp(30px, 7vw, 72px)", fontWeight:700, lineHeight:1.12, color:"#31260C", marginBottom:"28px", maxWidth:"820px" }}>
           Find your trusted braider in minutes, not weeks
         </h2>
         <div style={{ display:"flex", gap:"24px", justifyContent:"center", flexWrap:"wrap" }}>
@@ -398,7 +398,7 @@ export default function Home() {
           </button>
         </div>
         {/* hero images under the hook */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", maxWidth:"900px", margin:"36px auto 0" }} className="hero-img-grid">
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", maxWidth:"900px", margin:"24px auto 0" }} className="hero-img-grid">
           {heroImages.map((img) => (
             <div key={img.label} className="hero-img-card">
               <img src={img.url} alt={img.alt} className="hero-img" />
