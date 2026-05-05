@@ -357,12 +357,18 @@ export default function Home() {
         .hero-img-card{overflow:hidden;position:relative;border-radius:2px;height:180px;}
         .hero-img-label{position:absolute;bottom:0;left:0;right:0;padding:24px 12px 10px;background:linear-gradient(to top,rgba(44,26,14,.72),transparent);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F7F3EE;}
         .sage-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7AAF6A;margin-right:8px;vertical-align:middle;}
+        main > section{padding-top:56px !important;padding-bottom:56px !important;}
         @media(max-width:768px){
+          main > section{padding:28px 20px !important;}
           .grid-3{grid-template-columns:1fr!important;}
           .grid-2{grid-template-columns:1fr!important;}
-          .hero-title{font-size:36px!important;}
-          .hero-img-grid{grid-template-columns:1fr!important;}
-          .hero-img-card{height:140px!important;}
+          .hero-kicker{font-size:10px!important;letter-spacing:1.5px!important;white-space:nowrap;}
+          .hero-title{font-size:30px!important;line-height:1.18!important;max-width:16ch!important;}
+          .section-heading-sm{font-size:30px!important;line-height:1.15!important;}
+          .compact-heading{font-size:28px!important;line-height:1.15!important;}
+          .hero-img-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;}
+          .hero-img-card{height:92px!important;}
+          .hero-img-label{font-size:9px!important;letter-spacing:1px!important;padding:14px 8px 8px!important;}
           nav{padding:18px 24px!important;}
           .day-row{flex-direction:column!important;}
         }
@@ -379,8 +385,8 @@ export default function Home() {
 
       {/* ── HOOK: Full screen, one powerful sentence, two buttons ── */}
       <section style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", padding:"80px 48px", backgroundColor:"#F5F0E8", textAlign:"center" }}>
-        <p className="section-label" style={{ marginBottom:"18px" }}>For Black women across Germany</p>
-        <h2 className="font-display" style={{ fontSize:"72px", fontWeight:700, lineHeight:1.2, color:"#31260C", marginBottom:"48px", maxWidth:"900px" }}>
+        <p className="section-label hero-kicker" style={{ marginBottom:"18px" }}>For Black women across Germany</p>
+        <h2 className="font-display hero-title" style={{ fontSize:"clamp(30px, 7vw, 72px)", fontWeight:700, lineHeight:1.2, color:"#31260C", marginBottom:"48px", maxWidth:"820px" }}>
           Find your trusted braider in minutes, not weeks
         </h2>
         <div style={{ display:"flex", gap:"24px", justifyContent:"center", flexWrap:"wrap" }}>
@@ -405,7 +411,7 @@ export default function Home() {
       {/* ── PERSONALIZATION CARDS ── */}
       <section id="personalization" style={{ padding:"80px 48px", backgroundColor:"#F7F3EE", borderTop:"1px solid #D6CEC4" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto", textAlign:"center" }}>
-          <h3 className="font-display" style={{ fontSize:"36px", fontWeight:700, color:"#31260C", marginBottom:"12px" }}>What brings you here?</h3>
+          <h3 className="font-display section-heading-sm" style={{ fontSize:"clamp(28px, 4vw, 36px)", fontWeight:700, color:"#31260C", marginBottom:"12px", lineHeight:1.12 }}>What brings you here?</h3>
           <p className="font-body" style={{ fontSize:"16px", color:"#73673D", marginBottom:"48px" }}>Choose your path</p>
           
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(280px, 1fr))", gap:"24px" }}>
@@ -558,7 +564,7 @@ export default function Home() {
       </section>
 
       {/* GALLERY */}
-      <section style={{ padding:"80px 48px", backgroundColor:"#F5F0E8" }}>
+      <section style={{ padding:"56px 48px", backgroundColor:"#F5F0E8" }}>
         <div style={{ maxWidth:"1100px", margin:"0 auto" }}>
           <p className="section-label">Styles we celebrate</p>
           <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"8px", color:"#31260C" }}>
@@ -569,7 +575,7 @@ export default function Home() {
           </p>
 
           {/* Large grid */}
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gridTemplateRows:"auto auto", gap:"12px" }}>
+          <div className="hero-img-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", gridTemplateRows:"auto auto", gap:"12px" }}>
 
             {/* Large featured image left */}
             <div style={{ gridColumn:"1", gridRow:"1 / 3", backgroundColor:"#C5BDB0", borderRadius:"2px", minHeight:"420px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
@@ -635,9 +641,6 @@ export default function Home() {
             ))}
           </div>
 
-          <p className="font-body" style={{ fontSize:"13px", color:"#73673D", textAlign:"center", marginTop:"28px", fontStyle:"italic" }}>
-            When you have real braiders signed up, replace these placeholders with their actual portfolio photos.
-          </p>
         </div>
       </section>
 
@@ -761,9 +764,9 @@ export default function Home() {
       </section>
 
       {/* ── QUICK WIN: Geolocation + Braiders Count ── */}
-      <section style={{ padding:"80px 48px", backgroundColor:"#3D5212", color:"#F5F0E8", textAlign:"center" }}>
+      <section style={{ padding:"56px 48px", backgroundColor:"#3D5212", color:"#F5F0E8", textAlign:"center" }}>
         <div style={{ maxWidth:"700px", margin:"0 auto" }}>
-          <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+          <h2 className="font-display compact-heading" style={{ fontSize:"clamp(28px, 5vw, 48px)", fontWeight:700, lineHeight:1.2, marginBottom:"24px" }}>
             There are {nearbyBraidersCount > 0 ? nearbyBraidersCount : "3+"} braiders near {userCity || "you"} ready this weekend
           </h2>
           <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"36px" }}>
@@ -776,10 +779,10 @@ export default function Home() {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section style={{ backgroundColor:"#EDE7DF", padding:"80px 48px" }}>
+      <section style={{ backgroundColor:"#EDE7DF", padding:"56px 48px" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <p className="section-label">HOW IT WORKS</p>
-          <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"56px" }}>The Braidely way</h2>
+          <h2 className="font-display compact-heading" style={{ fontSize:"clamp(28px, 4.5vw, 38px)", fontWeight:600, marginBottom:"36px" }}>The Braidely way</h2>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"48px" }} className="grid-3">
             {[
               { step:"01", title:"Stop asking around", body:"Stop scrolling. Stop asking friends. Stop waiting weeks. See real braiders with real video proof, transparent pricing, and actual availability in your city." },
@@ -798,7 +801,7 @@ export default function Home() {
       </section>
 
       {/* ── REVIEWS ── */}
-      <section style={{ backgroundColor:"#F7F3EE", padding:"60px 24px", borderTop:"1px solid #D6CEC4", borderBottom:"1px solid #D6CEC4" }}>
+      <section style={{ backgroundColor:"#F7F3EE", padding:"48px 24px", borderTop:"1px solid #D6CEC4", borderBottom:"1px solid #D6CEC4" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto" }}>
           <p className="section-label">Trusted by the community</p>
           <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"40px" }}>What clients are saying</h2>
@@ -824,7 +827,7 @@ export default function Home() {
       </section>
 
       {/* ── JOIN SECTION ── */}
-      <section id="join" style={{ padding:"80px 48px", maxWidth:"1100px", margin:"0 auto" }}>
+      <section id="join" style={{ padding:"56px 48px", maxWidth:"1100px", margin:"0 auto" }}>
         <p className="section-label">Get started today</p>
         <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"8px" }}>Join Braidely — it is completely free</h2>
         <p className="font-body" style={{ fontSize:"15px", color:"#7A5C48", marginBottom:"56px" }}>
