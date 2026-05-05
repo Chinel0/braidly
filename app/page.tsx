@@ -357,9 +357,11 @@ export default function Home() {
         .hero-img-card{overflow:hidden;position:relative;border-radius:2px;height:180px;}
         .hero-img-label{position:absolute;bottom:0;left:0;right:0;padding:24px 12px 10px;background:linear-gradient(to top,rgba(44,26,14,.72),transparent);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F7F3EE;}
         .sage-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7AAF6A;margin-right:8px;vertical-align:middle;}
-        main > section{padding-top:56px !important;padding-bottom:56px !important;}
+        main > section{padding-top:44px !important;padding-bottom:44px !important;}
+        .hero-section{padding:16px 48px 8px !important;min-height:auto !important;}
         @media(max-width:768px){
           main > section{padding:28px 20px !important;}
+          .hero-section{padding:12px 20px 4px !important;}
           .grid-3{grid-template-columns:1fr!important;}
           .grid-2{grid-template-columns:1fr!important;}
           .hero-kicker{font-size:10px!important;letter-spacing:1.5px!important;white-space:nowrap;}
@@ -384,7 +386,7 @@ export default function Home() {
       </nav>
 
       {/* ── HOOK: Full screen, one powerful sentence, two buttons ── */}
-      <section style={{ minHeight:"auto", display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"center", padding:"28px 48px 24px", backgroundColor:"#F5F0E8", textAlign:"center" }}>
+      <section className="hero-section" style={{ minHeight:"auto", display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItems:"center", padding:"28px 48px 24px", backgroundColor:"#F5F0E8", textAlign:"center" }}>
         <p className="section-label hero-kicker" style={{ marginBottom:"14px" }}>For Black women across Germany</p>
         <h2 className="font-display hero-title" style={{ fontSize:"clamp(30px, 7vw, 72px)", fontWeight:700, lineHeight:1.12, color:"#31260C", marginBottom:"28px", maxWidth:"820px" }}>
           Find your trusted braider in minutes, not weeks
@@ -398,7 +400,7 @@ export default function Home() {
           </button>
         </div>
         {/* hero images under the hook */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", maxWidth:"900px", margin:"24px auto 0" }} className="hero-img-grid">
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", maxWidth:"900px", margin:"16px auto 0" }} className="hero-img-grid">
           {heroImages.map((img) => (
             <div key={img.label} className="hero-img-card">
               <img src={img.url} alt={img.alt} className="hero-img" />
@@ -409,7 +411,7 @@ export default function Home() {
       </section>
 
       {/* ── PERSONALIZATION CARDS ── */}
-      <section id="personalization" style={{ padding:"80px 48px", backgroundColor:"#F7F3EE", borderTop:"1px solid #D6CEC4" }}>
+      <section id="personalization" style={{ padding:"44px 48px", backgroundColor:"#F7F3EE", borderTop:"1px solid #D6CEC4" }}>
         <div style={{ maxWidth:"900px", margin:"0 auto", textAlign:"center" }}>
           <h3 className="font-display section-heading-sm" style={{ fontSize:"clamp(28px, 4vw, 36px)", fontWeight:700, color:"#31260C", marginBottom:"12px", lineHeight:1.12 }}>What brings you here?</h3>
           <p className="font-body" style={{ fontSize:"16px", color:"#73673D", marginBottom:"48px" }}>Choose your path</p>
