@@ -3,7 +3,8 @@
     "allow": [
       "Bash(Copy-Item \"C:\\\\Users\\\\nweke\\\\Downloads\\\\locs pinned up.jpg\" \"C:\\\\Users\\\\nweke\\\\braidly\\\\public\\\\locs_pinned_up.jpg\")",
       "Bash(node -e \"const p = require\\('./node_modules/next/package.json'\\); console.log\\(p.version\\)\")",
-      "Bash(mkdir \"c:\\\\Users\\\\nweke\\\\braidly\\\\app\\\\braiders\\\\[id]\")"
+      "Bash(mkdir \"c:\\\\Users\\\\nweke\\\\braidly\\\\app\\\\braiders\\\\[id]\")",
+      "Bash(npx tsc *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\nweke\\braidly\\app\\braiders"

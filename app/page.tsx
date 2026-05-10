@@ -317,6 +317,49 @@ export default function Home() {
   const [notifyEmail, setNotifyEmail] = useState("");
   const [notifySubmitted, setNotifySubmitted] = useState(false);
 
+  // ── braid buddy card selection ──
+  const [buddySelected, setBuddySelected] = useState(false);
+
+  // ── braid buddy form ──
+  const [buddySubmitted, setBuddySubmitted] = useState(false);
+  const [buddyLoading, setBuddyLoading] = useState(false);
+  const [buddyName, setBuddyName] = useState("");
+  const [buddyEmail, setBuddyEmail] = useState("");
+  const [buddyWhatsapp, setBuddyWhatsapp] = useState("");
+  const [buddyCity, setBuddyCity] = useState("");
+  const [buddyCanDo, setBuddyCanDo] = useState("");
+  const [buddyWantDone, setBuddyWantDone] = useState("");
+  const [buddyArrangement, setBuddyArrangement] = useState("");
+  const [buddyBio, setBuddyBio] = useState("");
+
+  // ── braid buddy list ──
+  const [buddies, setBuddies] = useState<Record<string, string>[]>([]);
+  useEffect(() => {
+    async function loadBuddies() {
+      try {
+        const q = query(collection(db, "braid_buddies"), orderBy("createdAt", "desc"));
+        const snap = await getDocs(q);
+        setBuddies(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Record<string, string>)));
+      } catch (e) { console.error(e); }
+    }
+    loadBuddies();
+  }, []);
+
+  async function handleBuddySubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setBuddyLoading(true);
+    try {
+      await addDoc(collection(db, "braid_buddies"), {
+        name: buddyName, email: buddyEmail, whatsapp: buddyWhatsapp,
+        city: buddyCity, canDo: buddyCanDo, wantDone: buddyWantDone,
+        arrangement: buddyArrangement, bio: buddyBio,
+        createdAt: Timestamp.now(),
+      });
+      setBuddySubmitted(true);
+    } catch (err) { console.error(err); }
+    finally { setBuddyLoading(false); }
+  }
+
   return (
     <main style={{ fontFamily: "'Georgia','Times New Roman',serif", backgroundColor: "#F7F3EE", color: "#2C1A0E", minHeight: "100vh", overflowX: "hidden" }}>
       <style>{`
@@ -465,24 +508,24 @@ export default function Home() {
               )}
             </div>
 
-            {/* New to city Card */}
-            <div 
-              onClick={() => { setUserType("new"); document.getElementById("problem")?.scrollIntoView({ behavior:"smooth" }); }}
-              style={{ 
-                padding:"40px 24px", 
-                backgroundColor:userType === "new" ? "#3D5212" : "#E8EDE0", 
-                color:userType === "new" ? "#F5F0E8" : "#31260C",
-                cursor:"pointer", 
-                borderRadius:"4px", 
+            {/* Braid Buddy Card */}
+            <div
+              onClick={() => { setBuddySelected(true); document.getElementById("braid-buddy")?.scrollIntoView({ behavior:"smooth" }); }}
+              style={{
+                padding:"40px 24px",
+                backgroundColor:buddySelected ? "#3D5212" : "#E8EDE0",
+                color:buddySelected ? "#F5F0E8" : "#31260C",
+                cursor:"pointer",
+                borderRadius:"4px",
                 transition:"all .3s",
-                border:userType === "new" ? "2px solid #3D5212" : "2px solid transparent"
+                border:buddySelected ? "2px solid #3D5212" : "2px solid transparent"
               }}
-              onMouseEnter={(e) => { if(userType !== "new") e.currentTarget.style.backgroundColor = "#DDE3D6"; }}
-              onMouseLeave={(e) => { if(userType !== "new") e.currentTarget.style.backgroundColor = "#E8EDE0"; }}
+              onMouseEnter={(e) => { if(!buddySelected) e.currentTarget.style.backgroundColor = "#DDE3D6"; }}
+              onMouseLeave={(e) => { if(!buddySelected) e.currentTarget.style.backgroundColor = "#E8EDE0"; }}
             >
-              <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>I'm new to the city</p>
-              <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Lost? Find your people and your braider</p>
-              {userType === "new" && (
+              <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>Find a Braid Buddy</p>
+              <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Swap skills. No money needed. Just community.</p>
+              {buddySelected && (
                 <div style={{ display:"flex", justifyContent:"center", marginTop:"24px" }}>
                   <svg className="arrow-bounce" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>
                 </div>
@@ -1163,6 +1206,143 @@ export default function Home() {
               </>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* ── BRAID BUDDY ── */}
+      <section id="braid-buddy" style={{ backgroundColor:"#F0F4EC", padding:"80px 48px" }}>
+        <div style={{ maxWidth:"960px", margin:"0 auto" }}>
+
+          {/* Part A — Header */}
+          <p className="section-label">Find your braid buddy</p>
+          <h2 className="font-display" style={{ fontSize:"clamp(28px,4vw,42px)", fontWeight:700, color:"#31260C", marginBottom:"16px", lineHeight:1.2 }}>
+            Two women. Two sets of hands. No invoice.
+          </h2>
+          <p className="font-body" style={{ fontSize:"16px", color:"#5C3A22", lineHeight:1.9, maxWidth:"580px", marginBottom:"0" }}>
+            You know how to braid. She knows how to braid. You both need your hair done. This is where you find each other.
+          </p>
+
+          {/* Part B — New to city callout */}
+          <div style={{ backgroundColor:"#1C2B1A", color:"white", padding:"32px 40px", margin:"40px 0", borderRadius:"2px" }}>
+            <h3 className="font-display" style={{ fontSize:"28px", fontWeight:700, color:"white", lineHeight:1.2 }}>New city. No connections.</h3>
+            <p className="font-body" style={{ fontSize:"15px", color:"#A0B898", lineHeight:1.9, marginTop:"16px", marginBottom:"32px" }}>
+              You don&apos;t know anyone. You don&apos;t know where to find anything. The city feels big and lonely. Finding your people starts with finding someone who understands your hair.
+            </p>
+            <div style={{ display:"flex", flexDirection:"column", gap:"16px" }}>
+              {[
+                "Tell us what styles you can do and what styles you want done",
+                "We show you women near you who are a good swap",
+                "You agree on terms — free swap, pay each other, your choice",
+              ].map((text, i) => (
+                <div key={i} style={{ display:"flex", gap:"20px", alignItems:"flex-start", borderLeft:"3px solid #3D5212", paddingLeft:"20px" }}>
+                  <span className="font-display" style={{ fontSize:"32px", fontWeight:700, color:"#B8AF53", lineHeight:1, minWidth:"32px" }}>{i + 1}</span>
+                  <p className="font-body" style={{ fontSize:"14px", color:"#C8D6BF", lineHeight:1.8, paddingTop:"6px" }}>{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Part C — Signup form */}
+          <div style={{ maxWidth:"600px" }}>
+            <h3 className="font-display" style={{ fontSize:"24px", fontWeight:600, color:"#31260C", marginBottom:"32px" }}>
+              Join as a Braid Buddy — it is free
+            </h3>
+
+            {buddySubmitted ? (
+              <div style={{ backgroundColor:"#EDE7DF", padding:"28px", border:"1px solid #D6CEC4" }}>
+                <p className="font-body" style={{ fontSize:"15px", color:"#2C1A0E", fontWeight:700, marginBottom:"8px" }}>You are on the list.</p>
+                <p className="font-body" style={{ fontSize:"13px", color:"#7A5C48", lineHeight:1.8 }}>
+                  We will notify you when we find your braid buddy in your city.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleBuddySubmit} style={{ display:"flex", flexDirection:"column", gap:"24px" }}>
+                {[
+                  { label:"Full Name", type:"text", val:buddyName, set:setBuddyName, placeholder:"Your name", req:true },
+                  { label:"Email Address", type:"email", val:buddyEmail, set:setBuddyEmail, placeholder:"your@email.com", req:true },
+                  { label:"WhatsApp Number", type:"tel", val:buddyWhatsapp, set:setBuddyWhatsapp, placeholder:"+49 176 XXXXXXXX", req:true },
+                  { label:"Your City", type:"text", val:buddyCity, set:setBuddyCity, placeholder:"e.g. München, Berlin, Hamburg", req:true },
+                  { label:"Styles I Can Do", type:"text", val:buddyCanDo, set:setBuddyCanDo, placeholder:"e.g. Knotless braids, Box braids, Locs", req:true },
+                  { label:"Styles I Want Done", type:"text", val:buddyWantDone, set:setBuddyWantDone, placeholder:"e.g. Goddess locs, Twists, Cornrows", req:true },
+                ].map((f) => (
+                  <div key={f.label}>
+                    <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"8px" }}>{f.label}</label>
+                    <input className="input-field" type={f.type} value={f.val} onChange={(e) => f.set(e.target.value)} placeholder={f.placeholder} required={f.req} />
+                  </div>
+                ))}
+
+                <div>
+                  <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"12px" }}>Preferred Arrangement</label>
+                  <div style={{ display:"flex", gap:"8px" }}>
+                    {["Free swap", "Pay each other", "Flexible"].map((opt) => (
+                      <button key={opt} type="button" className={`service-card${buddyArrangement === opt ? " active" : ""}`} onClick={() => setBuddyArrangement(opt)}>{opt}</button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"8px" }}>
+                    About You <span style={{ fontWeight:400, textTransform:"none", letterSpacing:0 }}>(optional)</span>
+                  </label>
+                  <textarea className="input-field" value={buddyBio} onChange={(e) => setBuddyBio(e.target.value)} placeholder="Tell potential braid buddies a little about yourself..." rows={3} style={{ resize:"vertical", paddingTop:"8px" }} />
+                </div>
+
+                <button className="btn-primary" type="submit" disabled={buddyLoading}>
+                  {buddyLoading ? "Saving..." : "Find My Braid Buddy"}
+                </button>
+
+                {/* Part D — Trust note */}
+                <p className="font-body" style={{ fontSize:"12px", color:"#9E8070", lineHeight:1.7, borderTop:"1px solid #D6CEC4", paddingTop:"16px" }}>
+                  Always meet in a safe public space first. Tell someone where you are going. Your safety is your priority. Braidely connects you but your wellbeing comes first.
+                </p>
+              </form>
+            )}
+          </div>
+
+          {/* Part E — Public buddy profiles */}
+          <h3 className="font-display" style={{ fontSize:"28px", fontWeight:600, color:"#31260C", marginTop:"64px", marginBottom:"8px" }}>Braid Buddies near you</h3>
+          <p className="font-body" style={{ fontSize:"14px", color:"#73673D", marginBottom:"40px" }}>
+            Browse women looking for a braid swap in your city. Reach out directly on WhatsApp.
+          </p>
+
+          {buddies.length === 0 ? (
+            <p className="font-body" style={{ fontSize:"14px", color:"#9E8070", fontStyle:"italic", padding:"40px", textAlign:"center" }}>
+              No braid buddies in your city yet. Be the first to join.
+            </p>
+          ) : (
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:"24px" }} className="grid-3">
+              {buddies.map((b, i) => (
+                <div key={b.id ?? i} style={{ backgroundColor:"#EDE7DF", border:"1px solid #D6CEC4", padding:"24px", borderRadius:"2px" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"8px" }}>
+                    <span className="font-display" style={{ fontSize:"18px", fontWeight:600, color:"#31260C" }}>{b.name}</span>
+                  </div>
+                  <span className="tag">{b.city}</span>
+
+                  <p className="font-body" style={{ fontSize:"11px", color:"#9E8070", letterSpacing:"2px", textTransform:"uppercase", marginTop:"12px", marginBottom:"4px" }}>Can do</p>
+                  <p className="font-body" style={{ fontSize:"13px", color:"#5A6E58", marginBottom:"0" }}>{b.canDo}</p>
+
+                  <p className="font-body" style={{ fontSize:"11px", color:"#9E8070", letterSpacing:"2px", textTransform:"uppercase", marginTop:"10px", marginBottom:"4px" }}>Wants done</p>
+                  <p className="font-body" style={{ fontSize:"13px", color:"#5A6E58" }}>{b.wantDone}</p>
+
+                  {b.arrangement && (
+                    <span style={{ display:"inline-block", backgroundColor:"#C8D6BF", color:"#2D5016", fontSize:"11px", fontWeight:700, letterSpacing:"1px", padding:"4px 10px", marginTop:"8px", fontFamily:"'Lato',sans-serif", textTransform:"uppercase" }}>
+                      {b.arrangement}
+                    </span>
+                  )}
+
+                  <a
+                    href={`https://wa.me/${(b.whatsapp ?? "").replace(/\s+/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display:"block", width:"100%", marginTop:"16px", textAlign:"center", backgroundColor:"#3D5212", color:"#F7F3EE", padding:"14px 36px", fontFamily:"'Lato',sans-serif", fontSize:"13px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", textDecoration:"none" }}
+                  >
+                    WhatsApp
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+
         </div>
       </section>
 
