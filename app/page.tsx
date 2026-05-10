@@ -1215,6 +1215,13 @@ export default function Home() {
 
           {/* Part A — Header */}
           <p className="section-label">Find your braid buddy</p>
+          <div style={{ width:"100%", maxHeight:"480px", overflow:"hidden", borderRadius:"2px", margin:"20px 0 32px" }}>
+            <img
+              src="/braid_buddy_hero.jpg"
+              alt="Two women braiding together"
+              style={{ width:"100%", height:"480px", objectFit:"cover", objectPosition:"center top", display:"block" }}
+            />
+          </div>
           <h2 className="font-display" style={{ fontSize:"clamp(28px,4vw,42px)", fontWeight:700, color:"#31260C", marginBottom:"16px", lineHeight:1.2 }}>
             Two women. Two sets of hands. No invoice.
           </h2>

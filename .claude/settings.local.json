@@ -4,7 +4,9 @@
       "Bash(Copy-Item \"C:\\\\Users\\\\nweke\\\\Downloads\\\\locs pinned up.jpg\" \"C:\\\\Users\\\\nweke\\\\braidly\\\\public\\\\locs_pinned_up.jpg\")",
       "Bash(node -e \"const p = require\\('./node_modules/next/package.json'\\); console.log\\(p.version\\)\")",
       "Bash(mkdir \"c:\\\\Users\\\\nweke\\\\braidly\\\\app\\\\braiders\\\\[id]\")",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(npx vercel *)",
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\nweke\\\\Downloads\\\\20220731_214218.jpg\" \"C:\\\\Users\\\\nweke\\\\braidly\\\\public\\\\braid_buddy_hero.jpg\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\nweke\\braidly\\app\\braiders"
