@@ -608,22 +608,67 @@ export default function Home() {
             From knotless to goddess locs — find a braider who specialises in exactly what you want.
           </p>
 
-          {/* Flat 3×3 gallery grid — Goddess Locs fixed at row 2, col 2 */}
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", gap:"12px" }}>
+          {/* Large grid — Knotless Braids spans rows 1–2 on the left */}
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", gridTemplateRows:"auto auto", gap:"12px" }}>
+
+            {/* Large featured image — spans both rows on left */}
+            <div style={{ gridColumn:"1", gridRow:"1 / 3", backgroundColor:"#C5BDB0", borderRadius:"2px", minHeight:"420px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/knotless_braid2.jpg" alt="Knotless braids" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"20px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Knotless Braids</span>
+              </div>
+            </div>
+
+            {/* Row 1, col 2 */}
+            <div style={{ backgroundColor:"#B5A898", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/clean_braid.jpg" alt="Box braids" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Box Braids</span>
+              </div>
+            </div>
+
+            {/* Row 1, col 3 */}
+            <div style={{ backgroundColor:"#C9BFB3", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/twist.jpg" alt="Twist style" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Twist</span>
+              </div>
+            </div>
+
+            {/* Row 2, col 2 — Goddess Locs */}
+            <div style={{ backgroundColor:"#B0A890", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/locs.jpg" alt="Goddess locs" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Goddess Locs</span>
+              </div>
+            </div>
+
+            {/* Row 2, col 3 */}
+            <div style={{ backgroundColor:"#C2B8A8", borderRadius:"2px", minHeight:"200px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+              <img src="/natural_hair.jpg" alt="Natural hair" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
+              <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Natural Hair</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom row — three equal */}
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0, 1fr))", gap:"12px", marginTop:"12px" }}>
             {[
-              { label:"Knotless Braids", src:"/knotless_braid2.jpg",  alt:"Knotless braids" },
-              { label:"Box Braids",      src:"/clean_braid.jpg",       alt:"Box braids" },
-              { label:"Twist",           src:"/twist.jpg",             alt:"Twist style" },
-              { label:"Natural Hair",    src:"/natural_hair.jpg",      alt:"Natural hair" },
-              { label:"Goddess Locs",    src:"/locs.jpg",              alt:"Goddess locs" },
-              { label:"Wig",             src:"/wig.jpg",               alt:"Wig style" },
-              { label:"Dreadlocs",       src:"/dreadloc_twist.jpg",    alt:"Dreadlocs" },
-              { label:"Faux Locs",       src:"/long_faux_locs.jpg",    alt:"Faux locs" },
+              { label:"Wig",      src:"/wig.jpg" },
+              { label:"Dreadlocs", src:"/dreadloc_twist.jpg" },
+              { label:"Faux Locs", src:"/long_faux_locs.jpg" },
             ].map((item) => (
-              <div key={item.label} style={{ backgroundColor:"#BDB5A5", borderRadius:"2px", minHeight:"220px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
-                <img src={item.src} alt={item.alt} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <div key={item.label} style={{ backgroundColor:"#BDB5A5", borderRadius:"2px", minHeight:"160px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
+                <img src={item.src} alt={item.label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
                 <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
-                <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
+                <div style={{ position:"relative", zIndex:1, padding:"14px", width:"100%" }}>
                   <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>{item.label}</span>
                 </div>
               </div>
