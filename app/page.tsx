@@ -528,7 +528,7 @@ export default function Home() {
                   Give yourself a chance to be discovered today.
                 </p>
                 <div style={{ display:"flex", gap:"16px", justifyContent:"center", flexWrap:"wrap", marginTop:"32px" }}>
-                  <button className="btn-outline" style={{ color:"#F5F0E8", borderColor:"#F5F0E8" }} onClick={() => document.getElementById("join")?.scrollIntoView({ behavior:"smooth" })}>Register as a Braider</button>
+                  <button className="btn-outline" style={{ color:"#F5F0E8", borderColor:"#F5F0E8" }} onClick={() => document.getElementById("braider-form")?.scrollIntoView({ behavior:"smooth" })}>Register as a Braider</button>
                 </div>
               </>
             )}
@@ -981,7 +981,7 @@ export default function Home() {
           </div>
 
           {/* ── BRAIDER SIGNUP FORM ── */}
-          <div>
+          <div id="braider-form">
             <div style={{ display:"flex", alignItems:"center", gap:"16px", marginBottom:"16px" }}>
               <div style={{ width:"3px", height:"40px", backgroundColor:"#2C1A0E" }} />
               <h3 className="font-display" style={{ fontSize:"24px", fontWeight:600 }}>I am a braider</h3>
