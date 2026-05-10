@@ -4,7 +4,13 @@ import Link from "next/link";
 import { db } from "../firebase/firebase";
 import { collection, addDoc, getDocs, query, orderBy, Timestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "../lib/cloudinary";
-import { sendBraiderNotification, sendBraiderWelcome, sendClientConfirmation } from "../lib/sendEmails";
+async function sendEmail(payload: Record<string, string>) {
+  await fetch("/api/send-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
 
 function normalizeCityName(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -257,7 +263,7 @@ export default function Home() {
       setUploadProgress("");
       const priceText = priceRows.filter((r) => r.style && r.price).map((r) => `${r.style} — €${r.price}`).join(", ");
       const availText = DAYS.filter((d) => availability[d].enabled).map((d) => `${d} ${availability[d].from}–${availability[d].to}`).join(", ");
-      await addDoc(collection(db, "braiders"), {
+      const braiderRef = await addDoc(collection(db, "braiders"), {
         name: bName, email: bEmail, whatsapp: bWhatsapp,
         city: bCity, transportStop: bStop, bio: bBio,
         homeService: bHomeService, hasSalon: bHasSalon,
@@ -266,11 +272,8 @@ export default function Home() {
         available: availText, photoUrl, videoUrl,
         createdAt: Timestamp.now(),
       });
-      await sendBraiderWelcome({
-        braider_name: bName,
-        braider_email: bEmail,
-      });
       setBraiderSubmitted(true);
+      sendEmail({ type: "braider-welcome", braider_name: bName, braider_email: bEmail, braider_id: braiderRef.id }).catch(console.error);
     } catch (err) {
       setBraiderError("Something went wrong. Please try again.");
       console.error(err);
@@ -302,15 +305,7 @@ export default function Home() {
         status: "pending", createdAt: Timestamp.now(),
       });
 
-      // Send email to client immediately
-      await sendClientConfirmation({
-        client_name: cName,
-        client_email: cEmail,
-        braider_name: "your braider",
-        braider_city: cCity,
-        style: cStyle,
-        date: cDate,
-      });
+      sendEmail({ type: "client-confirmation", client_name: cName, client_email: cEmail, braider_name: selectedBraider?.name || "your braider", style: cStyle, date: cDate }).catch(console.error);
 
       setClientSubmitted(true);
     } catch (err) {
@@ -759,16 +754,24 @@ export default function Home() {
                     <p className="font-body" style={{ fontSize:"12px", color:"#6B8F5E", marginBottom:"6px", fontWeight:700 }}>{braider.homeService}</p>
                   )}
                   <p className="font-body" style={{ fontSize:"12px", color:"#9E8070", marginBottom:"20px", fontStyle:"italic" }}>{braider.available}</p>
-                  <button
-                    className="btn-primary"
-                    style={{ width:"100%" }}
-                    onClick={() => {
-                      setSelectedBraider(braider);
-                      document.getElementById("join")?.scrollIntoView({ behavior:"smooth" });
-                    }}
-                  >
-                    Book Appointment
-                  </button>
+                  <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
+                    <button
+                      className="btn-primary"
+                      style={{ width:"100%" }}
+                      onClick={() => {
+                        setSelectedBraider(braider);
+                        document.getElementById("join")?.scrollIntoView({ behavior:"smooth" });
+                      }}
+                    >
+                      Book Appointment
+                    </button>
+                    <a
+                      href={`/braiders/${braider.id}`}
+                      style={{ display:"block", textAlign:"center", fontFamily:"'Lato',sans-serif", fontSize:"12px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", color:"#3D5212", textDecoration:"none", padding:"10px" }}
+                    >
+                      View Profile →
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
