@@ -11,6 +11,7 @@ function normalizeCityName(value: string) {
 }
 
 const heroImages = [
+  { url: "/locs_pinned_up.jpg", alt: "Black woman with pinned up locs", label: "Pinned Up Locs" },
   { url: "/knotless_braid.jpg", alt: "Black woman with knotless braids", label: "Knotless Braids" },
   { url: "/wig.jpg", alt: "Black woman with wig style", label: "Wig Style" },
   { url: "/locs.jpg", alt: "Black woman with locs", label: "Goddess Locs" },
@@ -368,7 +369,7 @@ export default function Home() {
           .hero-title{font-size:30px!important;line-height:1.18!important;max-width:16ch!important;}
           .section-heading-sm{font-size:30px!important;line-height:1.15!important;}
           .compact-heading{font-size:28px!important;line-height:1.15!important;}
-          .hero-img-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;}
+          .hero-img-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;}
           .hero-img-card{height:92px!important;}
           .hero-img-label{font-size:9px!important;letter-spacing:1px!important;padding:14px 8px 8px!important;}
           nav{padding:18px 24px!important;}
@@ -404,7 +405,7 @@ export default function Home() {
           </button>
         </div>
         {/* hero images under the hook */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px", maxWidth:"900px", margin:"16px auto 0" }} className="hero-img-grid">
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"12px", maxWidth:"900px", margin:"16px auto 0" }} className="hero-img-grid">
           {heroImages.map((img) => (
             <div key={img.label} className="hero-img-card">
               <img src={img.url} alt={img.alt} className="hero-img" />
@@ -612,7 +613,7 @@ export default function Home() {
 
             {/* Large featured image left */}
             <div style={{ gridColumn:"1", gridRow:"1 / 3", backgroundColor:"#C5BDB0", borderRadius:"2px", minHeight:"420px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
-              <img src="/knotless_braid.jpg" alt="Knotless braids" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+              <img src="/knotless_braid2.jpg" alt="Knotless braids" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
               <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
               <div style={{ position:"relative", zIndex:1, padding:"20px", width:"100%" }}>
                 <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Knotless Braids</span>
@@ -633,7 +634,7 @@ export default function Home() {
               <img src="/twist.jpg" alt="Twist style" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
               <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
               <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
-                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Fulani Braids</span>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Twist</span>
               </div>
             </div>
 
@@ -651,7 +652,7 @@ export default function Home() {
               <img src="/natural_hair.jpg" alt="Natural hair" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
               <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(49,38,12,0.8), transparent)" }} />
               <div style={{ position:"relative", zIndex:1, padding:"16px", width:"100%" }}>
-                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Senegalese Twists</span>
+                <span className="tag" style={{ backgroundColor:"#3D5212", color:"#F5F0E8" }}>Natural Hair</span>
               </div>
             </div>
 
@@ -660,9 +661,9 @@ export default function Home() {
           {/* Bottom row — three equal */}
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:"12px", marginTop:"12px" }}>
             {[
-              { style: "Crochet Braids", src: "/wig.jpg" },
-              { style: "Cornrows", src: "/dreadloc_twist.jpg" },
-              { style: "Faux Locs", src: "/knotless_braid.jpg" },
+              { style: "Wig", src: "/wig.jpg" },
+              { style: "Dreadlocs", src: "/dreadloc_twist.jpg" },
+              { style: "Faux Locs", src: "/long_faux_locs.jpg" },
             ].map((item) => (
               <div key={item.style} style={{ backgroundColor:"#BDB5A5", borderRadius:"2px", minHeight:"160px", position:"relative", overflow:"hidden", display:"flex", alignItems:"flex-end" }}>
                 <img src={item.src} alt={item.style} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
@@ -715,8 +716,15 @@ export default function Home() {
             <a href="#join"><button className="btn-primary">Join as a Braider</button></a>
           </div>
         ) : (
+          <>
+            {citySearch.trim() && braiders.filter((b) => normalizeCityName(b.city).includes(normalizeCityName(citySearch.trim()))).length === 0 && (
+              <div style={{ textAlign:"center", padding:"48px 20px", backgroundColor:"#EDE7DF", border:"1px solid #D6CEC4", marginBottom:"28px" }}>
+                <p className="font-display" style={{ fontSize:"20px", marginBottom:"8px", color:"#5C3A22" }}>No braiders found in {citySearch}</p>
+                <p className="font-body" style={{ fontSize:"14px", color:"#9E8070" }}>Try a nearby city or clear the search to see all braiders.</p>
+              </div>
+            )}
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"28px" }} className="grid-3">
-            {braiders.map((braider) => (
+            {braiders.filter((b) => !citySearch.trim() || normalizeCityName(b.city).includes(normalizeCityName(citySearch.trim()))).map((braider) => (
               <div key={braider.id} className="card" style={{ borderRadius:"2px" }}>
                 <div className="video-frame">
                   {braider.videoUrl ? (
@@ -765,6 +773,7 @@ export default function Home() {
               </div>
             ))}
           </div>
+          </>
         )}
       </section>
 

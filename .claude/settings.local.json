@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Copy-Item \"C:\\\\Users\\\\nweke\\\\Downloads\\\\locs pinned up.jpg\" \"C:\\\\Users\\\\nweke\\\\braidly\\\\public\\\\locs_pinned_up.jpg\")"
+    ]
+  }
+}
