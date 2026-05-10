@@ -373,7 +373,11 @@ export default function Home() {
           .hero-img-label{font-size:9px!important;letter-spacing:1px!important;padding:14px 8px 8px!important;}
           nav{padding:18px 24px!important;}
           .day-row{flex-direction:column!important;}
+          .problem-headline{font-size:36px!important;line-height:1.2!important;}
         }
+        @keyframes bounce-down{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+        .arrow-bounce{animation:bounce-down 1.2s ease-in-out infinite;}
+        .problem-headline{font-size:52px;}
       `}</style>
 
       {/* ── NAV ── */}
@@ -434,6 +438,11 @@ export default function Home() {
             >
               <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>I need my hair done</p>
               <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Find trusted braiders with real video proof of their work</p>
+              {userType === "client" && (
+                <div style={{ display:"flex", justifyContent:"center", marginTop:"24px" }}>
+                  <svg className="arrow-bounce" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>
+                </div>
+              )}
             </div>
 
             {/* Braider Card */}
@@ -453,6 +462,11 @@ export default function Home() {
             >
               <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>I am a braider</p>
               <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Get visibility to clients actively looking for you</p>
+              {userType === "braider" && (
+                <div style={{ display:"flex", justifyContent:"center", marginTop:"24px" }}>
+                  <svg className="arrow-bounce" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>
+                </div>
+              )}
             </div>
 
             {/* New to city Card */}
@@ -472,6 +486,11 @@ export default function Home() {
             >
               <p className="font-display" style={{ fontSize:"24px", fontWeight:700, marginBottom:"16px" }}>I'm new to the city</p>
               <p className="font-body" style={{ fontSize:"14px", opacity:.8 }}>Lost? Find your people and your braider</p>
+              {userType === "new" && (
+                <div style={{ display:"flex", justifyContent:"center", marginTop:"24px" }}>
+                  <svg className="arrow-bounce" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -483,7 +502,7 @@ export default function Home() {
           <div style={{ maxWidth:"700px", margin:"0 auto", textAlign:"center" }}>
             {userType === "client" && (
               <>
-                <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+                <h2 className="font-display problem-headline" style={{ fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
                   You've scrolled Instagram for hours
                 </h2>
                 <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"16px" }}>
@@ -492,11 +511,15 @@ export default function Home() {
                 <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"0" }}>
                   <strong>This is the way it has always been.</strong> Until now.
                 </p>
+                <div style={{ display:"flex", gap:"16px", justifyContent:"center", flexWrap:"wrap", marginTop:"32px" }}>
+                  <button className="btn-primary" onClick={() => document.getElementById("braiders")?.scrollIntoView({ behavior:"smooth" })}>Find a Braider</button>
+                  <button className="btn-outline" style={{ color:"#F5F0E8", borderColor:"#F5F0E8" }} onClick={() => document.getElementById("join")?.scrollIntoView({ behavior:"smooth" })}>Register as a Braider</button>
+                </div>
               </>
             )}
             {userType === "braider" && (
               <>
-                <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+                <h2 className="font-display problem-headline" style={{ fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
                   You can braid beautifully
                 </h2>
                 <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"16px" }}>
@@ -505,11 +528,15 @@ export default function Home() {
                 <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"0" }}>
                   <strong>You could do 20 bookings a week, but nobody knows.</strong> Until now.
                 </p>
+                <div style={{ display:"flex", gap:"16px", justifyContent:"center", flexWrap:"wrap", marginTop:"32px" }}>
+                  <button className="btn-primary" onClick={() => document.getElementById("braiders")?.scrollIntoView({ behavior:"smooth" })}>Find a Braider</button>
+                  <button className="btn-outline" style={{ color:"#F5F0E8", borderColor:"#F5F0E8" }} onClick={() => document.getElementById("join")?.scrollIntoView({ behavior:"smooth" })}>Register as a Braider</button>
+                </div>
               </>
             )}
             {userType === "new" && (
               <>
-                <h2 className="font-display" style={{ fontSize:"48px", fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
+                <h2 className="font-display problem-headline" style={{ fontWeight:700, lineHeight:1.3, marginBottom:"24px" }}>
                   New city. No connections.
                 </h2>
                 <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"16px" }}>
@@ -560,6 +587,12 @@ export default function Home() {
             <p className="font-body" style={{ fontSize:"14px", color:"#C9A882", lineHeight:1.8 }}>
               <strong style={{ color:"#F7F3EE" }}>You do not need to be a registered business to join Braidely.</strong> Whether you are a student, a mother, an au pair, or a salon owner — if you can braid, you belong here.
             </p>
+            <button
+              onClick={() => document.getElementById("join")?.scrollIntoView({ behavior:"smooth" })}
+              style={{ backgroundColor:"#3D5212", color:"white", padding:"12px 28px", border:"none", textTransform:"uppercase", letterSpacing:"2px", fontFamily:"'Lato',sans-serif", fontSize:"12px", fontWeight:700, cursor:"pointer", marginTop:"16px" }}
+            >
+              Join as a Braider — it is free
+            </button>
           </div>
           </div>
         </div>
