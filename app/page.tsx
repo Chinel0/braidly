@@ -513,7 +513,6 @@ export default function Home() {
                 </p>
                 <div style={{ display:"flex", gap:"16px", justifyContent:"center", flexWrap:"wrap", marginTop:"32px" }}>
                   <button className="btn-primary" onClick={() => document.getElementById("braiders")?.scrollIntoView({ behavior:"smooth" })}>Find a Braider</button>
-                  <button className="btn-outline" style={{ color:"#F5F0E8", borderColor:"#F5F0E8" }} onClick={() => document.getElementById("join")?.scrollIntoView({ behavior:"smooth" })}>Register as a Braider</button>
                 </div>
               </>
             )}
@@ -526,10 +525,9 @@ export default function Home() {
                   But your clients only know you exist if they happen to know you. Your talent is invisible.
                 </p>
                 <p className="font-body" style={{ fontSize:"16px", lineHeight:1.8, opacity:.9, marginBottom:"0" }}>
-                  <strong>You could do 20 bookings a week, but nobody knows.</strong> Until now.
+                  Give yourself a chance to be discovered today.
                 </p>
                 <div style={{ display:"flex", gap:"16px", justifyContent:"center", flexWrap:"wrap", marginTop:"32px" }}>
-                  <button className="btn-primary" onClick={() => document.getElementById("braiders")?.scrollIntoView({ behavior:"smooth" })}>Find a Braider</button>
                   <button className="btn-outline" style={{ color:"#F5F0E8", borderColor:"#F5F0E8" }} onClick={() => document.getElementById("join")?.scrollIntoView({ behavior:"smooth" })}>Register as a Braider</button>
                 </div>
               </>
@@ -601,7 +599,7 @@ export default function Home() {
       {/* GALLERY */}
       <section style={{ padding:"56px 48px", backgroundColor:"#F5F0E8" }}>
         <div style={{ maxWidth:"1100px", margin:"0 auto" }}>
-          <p className="section-label">Styles we celebrate</p>
+          <p className="section-label">Our style is limitless</p>
           <h2 className="font-display" style={{ fontSize:"38px", fontWeight:600, marginBottom:"8px", color:"#31260C" }}>
             Every braid tells a story
           </h2>
