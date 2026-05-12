@@ -6,7 +6,10 @@
       "Bash(mkdir \"c:\\\\Users\\\\nweke\\\\braidly\\\\app\\\\braiders\\\\[id]\")",
       "Bash(npx tsc *)",
       "Bash(npx vercel *)",
-      "PowerShell(Copy-Item \"C:\\\\Users\\\\nweke\\\\Downloads\\\\20220731_214218.jpg\" \"C:\\\\Users\\\\nweke\\\\braidly\\\\public\\\\braid_buddy_hero.jpg\")"
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\nweke\\\\Downloads\\\\20220731_214218.jpg\" \"C:\\\\Users\\\\nweke\\\\braidly\\\\public\\\\braid_buddy_hero.jpg\")",
+      "Bash(Get-Content \"c:\\\\Users\\\\nweke\\\\braidly\\\\node_modules\\\\firebase\\\\package.json\")",
+      "Bash(Select-String '\"version\"')",
+      "Bash(Select-Object -First 3)"
     ],
     "additionalDirectories": [
       "c:\\Users\\nweke\\braidly\\app\\braiders"
