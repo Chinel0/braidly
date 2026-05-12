@@ -288,7 +288,18 @@ export default function Home() {
       });
       console.log("Step 5: Firestore saved - showing success");
       setBraiderSubmitted(true);
-      sendEmail({ type: "braider-welcome", braider_name: bName, braider_email: bEmail, braider_id: braiderRef.id }).catch(console.error);
+      try {
+        await fetch("/api/send-braider-welcome", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            braider_name: bName,
+            braider_email: bEmail,
+          }),
+        });
+      } catch (err) {
+        console.error("Email send failed:", err);
+      }
     } catch (err) {
       setBraiderError("Something went wrong. Please try again.");
       console.error(err);
@@ -320,7 +331,21 @@ export default function Home() {
         status: "pending", createdAt: Timestamp.now(),
       });
 
-      sendEmail({ type: "client-confirmation", client_name: cName, client_email: cEmail, braider_name: selectedBraider?.name || "your braider", style: cStyle, date: cDate }).catch(console.error);
+      try {
+        await fetch("/api/send-client-confirmation", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            client_name: cName,
+            client_email: cEmail,
+            braider_name: selectedBraider?.name || "your braider",
+            style: cStyle,
+            date: cDate,
+          }),
+        });
+      } catch (err) {
+        console.error("Email send failed:", err);
+      }
 
       setClientSubmitted(true);
     } catch (err) {
