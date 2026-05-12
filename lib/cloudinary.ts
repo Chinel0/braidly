@@ -11,7 +11,7 @@ export async function uploadToCloudinary(
   formData.append("resource_type", resourceType);
 
   const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
     { method: "POST", body: formData }
   );
 

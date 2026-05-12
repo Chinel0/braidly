@@ -250,19 +250,33 @@ export default function Home() {
     setBraiderLoading(true);
     setBraiderError("");
     try {
+      console.log("Step 1: Starting submission");
       let photoUrl = "";
       let videoUrl = "";
       if (photoFile) {
         setUploadProgress("Uploading photo...");
-        photoUrl = await uploadToCloudinary(photoFile, "image");
+        try {
+          photoUrl = await uploadToCloudinary(photoFile, "image");
+        } catch (uploadErr) {
+          console.error("Photo upload failed:", uploadErr);
+          photoUrl = "";
+        }
       }
+      console.log("Step 2: Photo result:", photoUrl);
       if (videoFile) {
         setUploadProgress("Uploading video...");
-        videoUrl = await uploadToCloudinary(videoFile, "video");
+        try {
+          videoUrl = await uploadToCloudinary(videoFile, "video");
+        } catch (uploadErr) {
+          console.error("Video upload failed:", uploadErr);
+          videoUrl = "";
+        }
       }
+      console.log("Step 3: Video result:", videoUrl);
       setUploadProgress("");
       const priceText = priceRows.filter((r) => r.style && r.price).map((r) => `${r.style} — €${r.price}`).join(", ");
       const availText = DAYS.filter((d) => availability[d].enabled).map((d) => `${d} ${availability[d].from}–${availability[d].to}`).join(", ");
+      console.log("Step 4: Saving to Firestore");
       const braiderRef = await addDoc(collection(db, "braiders"), {
         name: bName, email: bEmail, whatsapp: bWhatsapp,
         city: bCity, transportStop: bStop, bio: bBio,
@@ -272,6 +286,7 @@ export default function Home() {
         available: availText, photoUrl, videoUrl,
         createdAt: Timestamp.now(),
       });
+      console.log("Step 5: Firestore saved - showing success");
       setBraiderSubmitted(true);
       sendEmail({ type: "braider-welcome", braider_name: bName, braider_email: bEmail, braider_id: braiderRef.id }).catch(console.error);
     } catch (err) {
