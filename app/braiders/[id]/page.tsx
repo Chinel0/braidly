@@ -203,21 +203,11 @@ export default function BraiderProfilePage({
                 <div style={{ backgroundColor:"#31260C", padding:"32px", borderRadius:"2px" }}>
                   <p className="font-display" style={{ fontSize:"22px", fontWeight:600, color:"#F7F3EE", marginBottom:"12px", lineHeight:1.3 }}>Book {braider.name.split(" ")[0]}</p>
                   <p className="font-body" style={{ fontSize:"13px", color:"#B09880", lineHeight:1.7, marginBottom:"24px" }}>
-                    Send a booking request through Braidely. You will receive confirmation and contact details within 24 hours.
+                    Send a booking request through Braidely. Once confirmed, you will receive the braider's contact details including WhatsApp within 24 hours.
                   </p>
                   <Link href={`/#join`} className="btn-primary" style={{ display:"block", textAlign:"center" }}>
                     Request a Booking
                   </Link>
-                  {braider.whatsapp && (
-                    <a
-                      href={`https://wa.me/${braider.whatsapp.replace(/\s+/g, "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ display:"block", textAlign:"center", marginTop:"12px", fontFamily:"'Lato',sans-serif", fontSize:"12px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", color:"#A8C89A", textDecoration:"none" }}
-                    >
-                      WhatsApp {braider.name.split(" ")[0]}
-                    </a>
-                  )}
                 </div>
               </div>
 
