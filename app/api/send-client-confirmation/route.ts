@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   const { client_name, client_email, braider_name, style, date } = await request.json();
   try {
     await resend.emails.send({
-      from: "Braidely <onboarding@resend.dev>",
+      from: "Braidely <hello@braidely.com>",
       to: client_email,
       subject: "Your Braidely booking request has been sent",
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;color:#2C1A0E;">

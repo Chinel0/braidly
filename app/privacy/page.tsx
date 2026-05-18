@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
       </h1>
       <p style={{ fontSize: "13px", color: "#9E8070", marginBottom: "40px" }}>Last updated April 30, 2026</p>
 
-      <p style={{ marginBottom: "24px" }}>This Privacy Notice for Chinelo Lydia Nweke describes how and why we collect, store, use, and share your personal information when you use our services at <a href="https://braidely.vercel.app" style={{ color: "#7A3B1E" }}>braidely.vercel.app</a>.</p>
+      <p style={{ marginBottom: "24px" }}>This Privacy Notice for Chinelo Lydia Nweke describes how and why we collect, store, use, and share your personal information when you use our services at <a href="https://braidely.com" style={{ color: "#7A3B1E" }}>braidely.com</a>.</p>
 
       <p style={{ marginBottom: "24px" }}>Questions or concerns? Contact us at <a href="mailto:Nwekecl16046@gmail.com" style={{ color: "#7A3B1E" }}>Nwekecl16046@gmail.com</a></p>
 

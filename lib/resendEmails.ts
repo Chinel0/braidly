@@ -7,14 +7,14 @@ export async function sendBraiderWelcome(params: {
   braider_email: string;
 }) {
   await resend.emails.send({
-    from: "Braidely <onboarding@resend.dev>",
+    from: "Braidely <hello@braidely.com>",
     to: params.braider_email,
     subject: "Your Braidely profile is now live",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #2C1A0E;">
         <h1 style="font-size: 24px; color: #3D5212;">Welcome to Braidely, ${params.braider_name}.</h1>
         <p style="font-size: 15px; line-height: 1.8; margin-top: 16px;">Your profile is now live. Clients in your city can already find and book you.</p>
-        <a href="https://braidely.vercel.app/#braiders" style="display: inline-block; margin-top: 24px; background: #3D5212; color: white; padding: 14px 28px; text-decoration: none; font-weight: bold; letter-spacing: 1px;">View Your Profile</a>
+        <a href="https://braidely.com/#braiders" style="display: inline-block; margin-top: 24px; background: #3D5212; color: white; padding: 14px 28px; text-decoration: none; font-weight: bold; letter-spacing: 1px;">View Your Profile</a>
         <p style="font-size: 13px; color: #9E8070; margin-top: 32px;">Need to update your profile? Reply to this email and we will help within 24 hours.</p>
         <p style="font-size: 13px; color: #9E8070;">The Braidely Team</p>
       </div>
@@ -30,7 +30,7 @@ export async function sendClientConfirmation(params: {
   date: string;
 }) {
   await resend.emails.send({
-    from: "Braidely <onboarding@resend.dev>",
+    from: "Braidely <hello@braidely.com>",
     to: params.client_email,
     subject: "Your Braidely booking request has been sent",
     html: `
@@ -59,7 +59,7 @@ export async function sendBraiderNotification(params: {
   client_note: string;
 }) {
   await resend.emails.send({
-    from: "Braidely <onboarding@resend.dev>",
+    from: "Braidely <hello@braidely.com>",
     to: params.braider_email,
     subject: "New booking request on Braidely",
     html: `
@@ -89,7 +89,7 @@ export async function sendDayBeforeReminder(params: {
   date: string;
 }) {
   await resend.emails.send({
-    from: "Braidely <onboarding@resend.dev>",
+    from: "Braidely <hello@braidely.com>",
     to: params.client_email,
     subject: "Your appointment is tomorrow",
     html: `
