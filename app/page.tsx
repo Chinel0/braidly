@@ -833,9 +833,14 @@ export default function Home() {
                   {braider.transportStop && (
                     <p className="font-body" style={{ fontSize:"12px", color:"#9E8070", marginBottom:"6px" }}>Near: {braider.transportStop}</p>
                   )}
-                  {braider.homeService && (
-                    <p className="font-body" style={{ fontSize:"12px", color:"#6B8F5E", marginBottom:"6px", fontWeight:700 }}>{braider.homeService}</p>
-                  )}
+                  {(() => {
+                    const hasHome = braider.homeService === "I come to you" || braider.homeService === "Both";
+                    const hasSalon = braider.hasSalon === "Yes";
+                    if (hasHome && hasSalon) return <p className="font-body" style={{ fontSize:"13px", color:"#3D5212", marginBottom:"6px", fontStyle:"italic" }}>I can come to you or you can come to me</p>;
+                    if (hasHome) return <p className="font-body" style={{ fontSize:"13px", color:"#3D5212", marginBottom:"6px", fontStyle:"italic" }}>Home service available</p>;
+                    if (hasSalon) return <p className="font-body" style={{ fontSize:"13px", color:"#3D5212", marginBottom:"6px", fontStyle:"italic" }}>Salon only</p>;
+                    return null;
+                  })()}
                   <p className="font-body" style={{ fontSize:"12px", color:"#9E8070", marginBottom:"20px", fontStyle:"italic" }}>{braider.available}</p>
                   <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
                     <button
@@ -1068,7 +1073,7 @@ export default function Home() {
 
                 <button className="btn-primary" type="submit">Send Booking Request</button>
                 <p className="font-body" style={{ fontSize:"11px", color:"#A89080", lineHeight:1.6 }}>
-                  Braider contact details are shared only after your booking is confirmed. A reminder email is sent the day before your appointment.
+                  Send a booking request through Braidely. Once confirmed, you will receive the braider's contact details including WhatsApp within 24 hours.
                 </p>
                 </form>
               </>
