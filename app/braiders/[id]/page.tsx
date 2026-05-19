@@ -9,6 +9,7 @@ interface Braider {
   name: string;
   email: string;
   whatsapp?: string;
+  instagram?: string;
   city: string;
   transportStop?: string;
   bio?: string;
@@ -178,6 +179,11 @@ export default function BraiderProfilePage({
                 {/* Salon */}
                 {braider.hasSalon === "Yes" && braider.salonAddress && (
                   <p className="font-body" style={{ fontSize:"13px", color:"#9E8070", marginBottom:"8px" }}>Salon: {braider.salonAddress}</p>
+                )}
+
+                {/* Instagram */}
+                {braider.instagram && (
+                  <p className="font-body" style={{ fontSize:"13px", color:"#9E8070", marginBottom:"8px" }}>Instagram: @{braider.instagram.replace(/^@/, "")}</p>
                 )}
               </div>
 

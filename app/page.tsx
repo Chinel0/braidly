@@ -218,6 +218,7 @@ export default function Home() {
   const [bName, setBName] = useState("");
   const [bEmail, setBEmail] = useState("");
   const [bWhatsapp, setBWhatsapp] = useState("");
+  const [bInstagram, setBInstagram] = useState("");
   const [bCity, setBCity] = useState("");
   const [bStop, setBStop] = useState("");
   const [bBio, setBBio] = useState("");
@@ -278,7 +279,7 @@ export default function Home() {
       const availText = DAYS.filter((d) => availability[d].enabled).map((d) => `${d} ${availability[d].from}–${availability[d].to}`).join(", ");
       console.log("Step 4: Saving to Firestore");
       const braiderRef = await addDoc(collection(db, "braiders"), {
-        name: bName, email: bEmail, whatsapp: bWhatsapp,
+        name: bName, email: bEmail, whatsapp: bWhatsapp, instagram: bInstagram,
         city: bCity, transportStop: bStop, bio: bBio,
         homeService: bHomeService, hasSalon: bHasSalon,
         salonAddress: bSalonAddress, styles: priceText,
@@ -295,6 +296,7 @@ export default function Home() {
           body: JSON.stringify({
             braider_name: bName,
             braider_email: bEmail,
+            braider_id: braiderRef.id,
           }),
         });
       } catch (err) {
@@ -321,13 +323,14 @@ export default function Home() {
   async function handleClientSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await addDoc(collection(db, "bookings"), {
+      const bookingRef = await addDoc(collection(db, "bookings"), {
         clientName: cName, clientEmail: cEmail,
         clientCity: cCity, style: cStyle,
         date: cDate, note: cNote,
         braiderName: selectedBraider?.name || "",
         braiderEmail: selectedBraider?.email || "",
         braiderCity: selectedBraider?.city || "",
+        braiderId: selectedBraider?.id || "",
         status: "pending", createdAt: Timestamp.now(),
       });
 
@@ -345,6 +348,25 @@ export default function Home() {
         });
       } catch (err) {
         console.error("Email send failed:", err);
+      }
+
+      try {
+        await fetch("/api/send-braider-notification", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            braider_name: selectedBraider?.name || "",
+            braider_email: selectedBraider?.email || "",
+            client_name: cName,
+            client_email: cEmail,
+            style: cStyle,
+            date: cDate,
+            note: cNote,
+            booking_id: bookingRef.id,
+          }),
+        });
+      } catch (err) {
+        console.error("Braider notification failed:", err);
       }
 
       setClientSubmitted(true);
@@ -371,6 +393,41 @@ export default function Home() {
   const [buddyWantDone, setBuddyWantDone] = useState("");
   const [buddyArrangement, setBuddyArrangement] = useState("");
   const [buddyBio, setBuddyBio] = useState("");
+
+  // ── swap request ──
+  const [swapTarget, setSwapTarget] = useState<Record<string,string> | null>(null);
+  const [swapName, setSwapName] = useState("");
+  const [swapEmail, setSwapEmail] = useState("");
+  const [swapWhatsapp, setSwapWhatsapp] = useState("");
+  const [swapMessage, setSwapMessage] = useState("");
+  const [swapSubmitted, setSwapSubmitted] = useState(false);
+  const [swapLoading, setSwapLoading] = useState(false);
+
+  async function handleSwapSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!swapTarget) return;
+    setSwapLoading(true);
+    try {
+      await fetch("/api/send-swap-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          requester_name: swapName,
+          requester_email: swapEmail,
+          requester_whatsapp: swapWhatsapp,
+          requester_message: swapMessage,
+          target_name: swapTarget.name,
+          target_email: swapTarget.email,
+          target_whatsapp: swapTarget.whatsapp,
+        }),
+      });
+      setSwapSubmitted(true);
+    } catch (err) {
+      console.error("Swap request failed:", err);
+    } finally {
+      setSwapLoading(false);
+    }
+  }
 
   // ── braid buddy list ──
   const [buddies, setBuddies] = useState<Record<string, string>[]>([]);
@@ -1116,6 +1173,7 @@ export default function Home() {
                       { label:"Full Name", val:bName, set:setBName, placeholder:"Your name", type:"text", req:true },
                       { label:"Email Address", val:bEmail, set:setBEmail, placeholder:"your@email.com", type:"email", req:true },
                       { label:"WhatsApp Number", val:bWhatsapp, set:setBWhatsapp, placeholder:"+49 176 XXXXXXXX", type:"tel", req:true },
+                      { label:"Instagram Handle", val:bInstagram, set:setBInstagram, placeholder:"@yourhandle", type:"text", req:false },
                       { label:"Your City", val:bCity, set:setBCity, placeholder:"e.g. München, Berlin, Hamburg", type:"text", req:true },
                       { label:"Nearest Bus or U-Bahn Stop", val:bStop, set:setBStop, placeholder:"e.g. Marienplatz, Ostbahnhof", type:"text", req:false },
                     ].map((f) => (
@@ -1382,14 +1440,13 @@ export default function Home() {
                     </span>
                   )}
 
-                  <a
-                    href={`https://wa.me/${(b.whatsapp ?? "").replace(/\s+/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ display:"block", width:"100%", marginTop:"16px", textAlign:"center", backgroundColor:"#3D5212", color:"#F7F3EE", padding:"14px 36px", fontFamily:"'Lato',sans-serif", fontSize:"13px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", textDecoration:"none" }}
+                  <button
+                    type="button"
+                    onClick={() => { setSwapTarget(b); setSwapSubmitted(false); setSwapName(""); setSwapEmail(""); setSwapWhatsapp(""); setSwapMessage(""); }}
+                    style={{ display:"block", width:"100%", marginTop:"16px", textAlign:"center", backgroundColor:"#3D5212", color:"#F7F3EE", padding:"14px 36px", fontFamily:"'Lato',sans-serif", fontSize:"13px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", border:"none", cursor:"pointer" }}
                   >
-                    WhatsApp
-                  </a>
+                    Request a swap
+                  </button>
                 </div>
               ))}
             </div>
@@ -1397,6 +1454,60 @@ export default function Home() {
 
         </div>
       </section>
+
+      {/* SWAP REQUEST MODAL */}
+      {swapTarget && (
+        <div style={{ position:"fixed", inset:0, backgroundColor:"rgba(44,26,14,0.6)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center", padding:"20px" }}>
+          <div style={{ backgroundColor:"#F7F3EE", maxWidth:"480px", width:"100%", padding:"40px", position:"relative", border:"1px solid #D6CEC4" }}>
+            <button
+              type="button"
+              onClick={() => setSwapTarget(null)}
+              style={{ position:"absolute", top:"16px", right:"20px", background:"transparent", border:"none", fontSize:"22px", color:"#9E8070", cursor:"pointer", fontFamily:"'Lato',sans-serif" }}
+            >
+              ×
+            </button>
+            {swapSubmitted ? (
+              <div>
+                <p className="font-display" style={{ fontSize:"22px", fontWeight:600, color:"#3D5212", marginBottom:"12px" }}>Swap request sent.</p>
+                <p className="font-body" style={{ fontSize:"14px", color:"#7A5C48", lineHeight:1.8 }}>
+                  Both you and {swapTarget.name} will receive each other's WhatsApp number by email.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSwapTarget(null)}
+                  style={{ marginTop:"24px", backgroundColor:"#3D5212", color:"#F7F3EE", border:"none", padding:"12px 28px", fontFamily:"'Lato',sans-serif", fontSize:"13px", fontWeight:700, letterSpacing:"2px", textTransform:"uppercase", cursor:"pointer" }}
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSwapSubmit} style={{ display:"flex", flexDirection:"column", gap:"20px" }}>
+                <div>
+                  <p className="font-display" style={{ fontSize:"22px", fontWeight:600, color:"#2C1A0E", marginBottom:"8px" }}>Swap with {swapTarget.name}</p>
+                  <p className="font-body" style={{ fontSize:"13px", color:"#7A5C48", lineHeight:1.7 }}>Send a swap request. Both of you will receive each other's WhatsApp by email.</p>
+                </div>
+                {[
+                  { label:"Your Name", val:swapName, set:setSwapName, type:"text", req:true },
+                  { label:"Your Email", val:swapEmail, set:setSwapEmail, type:"email", req:true },
+                  { label:"Your WhatsApp", val:swapWhatsapp, set:setSwapWhatsapp, type:"tel", req:true },
+                ].map((f) => (
+                  <div key={f.label}>
+                    <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"6px" }}>{f.label}</label>
+                    <input className="input-field" type={f.type} value={f.val} onChange={(e) => f.set(e.target.value)} required={f.req} />
+                  </div>
+                ))}
+                <div>
+                  <label className="font-body" style={{ fontSize:"11px", letterSpacing:"2px", textTransform:"uppercase", color:"#9E8070", display:"block", marginBottom:"6px" }}>Message <span style={{ fontWeight:400, textTransform:"none", letterSpacing:0 }}>(optional)</span></label>
+                  <textarea className="input-field" value={swapMessage} onChange={(e) => setSwapMessage(e.target.value)} rows={3} style={{ resize:"vertical", paddingTop:"8px" }} />
+                </div>
+                <button className="btn-primary" type="submit" disabled={swapLoading}>
+                  {swapLoading ? "Sending..." : "Send swap request"}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* CONTACT */}
       <section style={{ backgroundColor:"#EDE7DF", padding:"80px 48px", borderTop:"1px solid #D6CEC4" }}>
