@@ -3,6 +3,13 @@ import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+function escapeHtml(str: string) {
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
 export async function POST(request: Request) {
   const {
     requester_name,
@@ -13,26 +20,32 @@ export async function POST(request: Request) {
     target_email,
     target_whatsapp,
   } = await request.json();
+  if (!isValidEmail(requester_email) || !isValidEmail(target_email)) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+  }
+  if (!requester_name || !requester_whatsapp || !target_name || !target_whatsapp) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
 
   try {
     // Email 1 — to the TARGET buddy
     await resend.emails.send({
       from: "Braidely <hello@braidely.com>",
       to: target_email,
-      subject: `${requester_name} wants to swap braiding with you`,
+      subject: `${escapeHtml(requester_name)} wants to swap braiding with you`,
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;color:#2C1A0E;">
-        <h1 style="font-size:24px;color:#3D5212;">Someone wants to swap with you, ${target_name}.</h1>
-        <p style="font-size:15px;line-height:1.8;margin-top:16px;"><strong>${requester_name}</strong> saw your Braid Buddy profile on Braidely and wants to swap braiding with you.</p>
+        <h1 style="font-size:24px;color:#3D5212;">Someone wants to swap with you, ${escapeHtml(target_name)}.</h1>
+        <p style="font-size:15px;line-height:1.8;margin-top:16px;"><strong>${escapeHtml(requester_name)}</strong> saw your Braid Buddy profile on Braidely and wants to swap braiding with you.</p>
         ${requester_message ? `
         <div style="background:#F5F0E8;padding:20px;margin-top:24px;border-left:4px solid #3D5212;">
-          <p style="margin:0;font-size:14px;font-style:italic;">"${requester_message}"</p>
+          <p style="margin:0;font-size:14px;font-style:italic;">"${escapeHtml(requester_message)}"</p>
         </div>
         ` : ""}
         <div style="background:#E8EDE0;padding:20px;margin-top:24px;border-left:4px solid #6B8F5E;">
           <p style="margin:0;font-size:14px;font-weight:bold;color:#3D5212;">Here is their WhatsApp</p>
-          <p style="margin:8px 0 0;font-size:16px;font-weight:bold;">${requester_whatsapp}</p>
+          <p style="margin:8px 0 0;font-size:16px;font-weight:bold;">${escapeHtml(requester_whatsapp)}</p>
         </div>
-        <p style="font-size:14px;line-height:1.8;margin-top:24px;">Reach out to ${requester_name} directly on WhatsApp to arrange your swap.</p>
+        <p style="font-size:14px;line-height:1.8;margin-top:24px;">Reach out to ${escapeHtml(requester_name)} directly on WhatsApp to arrange your swap.</p>
         <p style="font-size:13px;color:#9E8070;margin-top:32px;">The Braidely Team</p>
       </div>`,
     });
@@ -43,13 +56,13 @@ export async function POST(request: Request) {
       to: requester_email,
       subject: "Your swap request has been sent",
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;color:#2C1A0E;">
-        <h1 style="font-size:24px;color:#3D5212;">Your swap request has been sent, ${requester_name}.</h1>
-        <p style="font-size:15px;line-height:1.8;margin-top:16px;">We've notified <strong>${target_name}</strong> that you want to swap braiding with them.</p>
+        <h1 style="font-size:24px;color:#3D5212;">Your swap request has been sent, ${escapeHtml(requester_name)}.</h1>
+        <p style="font-size:15px;line-height:1.8;margin-top:16px;">We've notified <strong>${escapeHtml(target_name)}</strong> that you want to swap braiding with them.</p>
         <div style="background:#E8EDE0;padding:20px;margin-top:24px;border-left:4px solid #6B8F5E;">
           <p style="margin:0;font-size:14px;font-weight:bold;color:#3D5212;">Here is their WhatsApp</p>
-          <p style="margin:8px 0 0;font-size:16px;font-weight:bold;">${target_whatsapp}</p>
+          <p style="margin:8px 0 0;font-size:16px;font-weight:bold;">${escapeHtml(target_whatsapp)}</p>
         </div>
-        <p style="font-size:14px;line-height:1.8;margin-top:24px;">You can reach out to ${target_name} directly on WhatsApp if you'd like to connect sooner.</p>
+        <p style="font-size:14px;line-height:1.8;margin-top:24px;">You can reach out to ${escapeHtml(target_name)} directly on WhatsApp if you'd like to connect sooner.</p>
         <p style="font-size:13px;color:#9E8070;margin-top:32px;">The Braidely Team</p>
       </div>`,
     });
