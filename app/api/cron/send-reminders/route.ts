@@ -1,58 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
+import { adminDb } from "../../../../lib/firebase-admin";
 import { Resend } from "resend";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC1GgBEf61aBvVGZZxpRwlt1lEIn-5wQ4w",
-  authDomain: "braidely.firebaseapp.com",
-  projectId: "braidely",
-  storageBucket: "braidely.firebasestorage.app",
-  messagingSenderId: "326745046861",
-  appId: "1:326745046861:web:026be689be388ac9b5c104",
-};
-
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET(request: NextRequest) {
-  // Protect with a secret so only Vercel cron can call this
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Calculate tomorrow's date as YYYY-MM-DD string
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const tomorrowStr = tomorrow.toISOString().split("T")[0];
 
   try {
-    const q = query(
-      collection(db, "bookings"),
-      where("status", "==", "confirmed"),
-      where("date", "==", tomorrowStr)
-    );
-    const snap = await getDocs(q);
+    const snap = await adminDb
+      .collection("bookings")
+      .where("status", "==", "confirmed")
+      .where("date", "==", tomorrowStr)
+      .get();
 
     const results: string[] = [];
 
     for (const bookingDoc of snap.docs) {
       const booking = bookingDoc.data();
 
-      // Look up braider contact details
       let whatsapp = "";
       let instagram = "";
       if (booking.braiderId) {
         try {
-          const braiderSnap = await getDoc(doc(db, "braiders", booking.braiderId));
-          if (braiderSnap.exists()) {
-            whatsapp = braiderSnap.data().whatsapp || "";
-            instagram = braiderSnap.data().instagram || "";
+          const braiderSnap = await adminDb.collection("braiders").doc(booking.braiderId).get();
+          if (braiderSnap.exists) {
+            whatsapp = braiderSnap.data()?.whatsapp || "";
+            instagram = braiderSnap.data()?.instagram || "";
           }
         } catch {
-          // Continue without contact details if lookup fails
+          // Continue without contact details
         }
       }
 

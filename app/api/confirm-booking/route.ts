@@ -1,19 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { adminDb } from "../../../lib/firebase-admin";
 import { Resend } from "resend";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC1GgBEf61aBvVGZZxpRwlt1lEIn-5wQ4w",
-  authDomain: "braidely.firebaseapp.com",
-  projectId: "braidely",
-  storageBucket: "braidely.firebasestorage.app",
-  messagingSenderId: "326745046861",
-  appId: "1:326745046861:web:026be689be388ac9b5c104",
-};
-
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET(request: NextRequest) {
@@ -23,14 +11,14 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const bookingRef = doc(db, "bookings", bookingId);
-    const bookingSnap = await getDoc(bookingRef);
+    const bookingRef = adminDb.collection("bookings").doc(bookingId);
+    const bookingSnap = await bookingRef.get();
 
-    if (!bookingSnap.exists()) {
+    if (!bookingSnap.exists) {
       return new NextResponse("Booking not found", { status: 404 });
     }
 
-    const booking = bookingSnap.data();
+    const booking = bookingSnap.data()!;
 
     if (booking.status === "confirmed") {
       return new NextResponse(`
@@ -41,23 +29,23 @@ export async function GET(request: NextRequest) {
       `, { headers: { "Content-Type": "text/html" } });
     }
 
-    // Get braider details for contact info
+    // Look up braider contact details
     let whatsapp = "";
     let instagram = "";
     if (booking.braiderId) {
       try {
-        const braiderSnap = await getDoc(doc(db, "braiders", booking.braiderId));
-        if (braiderSnap.exists()) {
-          whatsapp = braiderSnap.data().whatsapp || "";
-          instagram = braiderSnap.data().instagram || "";
+        const braiderSnap = await adminDb.collection("braiders").doc(booking.braiderId).get();
+        if (braiderSnap.exists) {
+          whatsapp = braiderSnap.data()?.whatsapp || "";
+          instagram = braiderSnap.data()?.instagram || "";
         }
       } catch {
-        // Fall back gracefully if braider lookup fails
+        // Continue without contact details if lookup fails
       }
     }
 
-    // Update booking status
-    await updateDoc(bookingRef, { status: "confirmed" });
+    // Update booking status to confirmed
+    await bookingRef.update({ status: "confirmed" });
 
     // Send client confirmation with WhatsApp + Instagram only
     const hasContact = whatsapp || instagram;
